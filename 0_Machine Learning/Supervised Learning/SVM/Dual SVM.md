@@ -80,7 +80,9 @@ $$\max\limits_{all \ \alpha_n \geq 0}{\left ( \min\limits_{b,\mathbf{w}}{ \under
 
 首先对b求偏微分，得到:
 
-$\frac{\partial\mathcal{L}(b, \mathbf{w}, \alpha)}{\partial \ b} = \sum\limits_{n=1}^{N}\alpha_ny_n = 0\end{align*}$
+$$
+\frac{\partial\mathcal{L}(b, \mathbf{w}, \alpha)}{\partial \ b} = \sum\limits_{n=1}^{N}\alpha_ny_n = 0
+$$
 
 
 
@@ -92,7 +94,9 @@ $$\min\mathcal{L}(b, \mathbf{w},\alpha) = \min \frac{1}{2}\mathbf{w}^T\mathbf{w}
 
 既然我们的最优解需要满足∑αnyn=0，那么上式也应该满足，那么蓝色部分就会变成0，问题得到了简化。接着对w求微分如下:
 
-$$\begin{align*} \frac{\partial\mathcal{L}(b, \mathbf{w}, \alpha)}{\partial \ \mathbf{w}} = \mathbf{w} - \sum\limits_{n=1}^{N}\alpha_ny_n\mathbf{z}_n = \mathbf{0}\end{align*}$$
+$$
+\frac{\partial\mathcal{L}(b, \mathbf{w}, \alpha)}{\partial \ \mathbf{w}} = \mathbf{w} - \sum\limits_{n=1}^{N}\alpha_ny_n\mathbf{z}_n = \mathbf{0}
+$$
 
 即最优解满足: $\mathbf{w} = \sum\limits_{n=1}^{N}\alpha_ny_n\mathbf{z}_n$，接着继续化简minL:
 
