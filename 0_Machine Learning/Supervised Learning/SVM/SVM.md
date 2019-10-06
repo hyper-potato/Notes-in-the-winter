@@ -2,7 +2,7 @@
 
 
 ![7e49cf765eb3680c85185bc30a9db196_r.jpg](https://pic3.zhimg.com/7e49cf765eb3680c85185bc30a9db196_r.jpg)
-left- svm basic problem  
+left- svm basic problem
 right- extension
 
 

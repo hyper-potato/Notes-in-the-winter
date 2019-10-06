@@ -64,7 +64,7 @@ $\phi_2(\mathbf{x}) =(1, x_1,x_2...,x_d, x_1^2,x_1x_2,...,x_1x_d,...,x_2x_1,x_2^
 
 那么对两个数据x,x′计算内积如下:
 
-$$\phi_2(\mathbf{x})\phi_2(\mathbf{x}^{'}) &= 1 + \sum\limits_{i=1}^{d}x_ix_{i}^{'} + \sum\limits_{i=1}^{d}\sum\limits_{j=1}^{d}x_ix_jx_i^{'}x_j^{'} \\ &= 1 + \sum\limits_{i=1}^{d}x_ix_{i}^{'} + \sum\limits_{i=1}^{d}x_ix_i^{'}\sum\limits_{j=1}^{d}x_jx_j^{'} \\ &=1 + \mathbf{x}\mathbf{x}^{'} + (\mathbf{x}\mathbf{x}^{'})^2$$
+$\begin{align}\phi_2(\mathbf{x})\phi_2(\mathbf{x}^{'}) &= 1 + \sum\limits_{i=1}^{d}x_ix_{i}^{'} + \sum\limits_{i=1}^{d}\sum\limits_{j=1}^{d}x_ix_jx_i^{'}x_j^{'} \\ &= 1 + \sum\limits_{i=1}^{d}x_ix_{i}^{'} + \sum\limits_{i=1}^{d}x_ix_i^{'}\sum\limits_{j=1}^{d}x_jx_j^{'} \\ &=1 + \mathbf{x}\mathbf{x}^{'} + (\mathbf{x}\mathbf{x}^{'})^2 \end{align}$
 
 可以发现，我们将转换与计算内积的过程转为了一步完成，就是上式，而且计算仅仅在原始维度上进行，复杂度从O(d~)降到了O(d)，完全去除了对d~的依赖。
 
