@@ -100,7 +100,13 @@ $$
 
 即最优解满足: $\mathbf{w} = \sum\limits_{n=1}^{N}\alpha_ny_n\mathbf{z}_n$，接着继续化简minL:
 
-$$\begin{align} \min\mathcal{L}(b, \mathbf{w},\alpha) & \Leftrightarrow \min \frac{1}{2}\mathbf{w}^T\mathbf{w} + \sum\alpha_n(1-y_n\mathbf{w}^T\mathbf{z}^n) \\ &\Leftrightarrow \min \frac{1}{2}\mathbf{w}^T\mathbf{w} - \sum \alpha_ny_n\mathbf{z}^n\mathbf{w}^T+ \sum\alpha_n \\ & \Leftrightarrow {\min} -\frac{1}{2}\mathbf{w}^T\mathbf{w}  + \sum\limits_{n=1}^{N}\alpha_n \\ & \Leftrightarrow -\frac{1}{2} \Arrowvert \sum\limits_{n=1}^{N}\alpha_ny_n\mathbf{z}_n\Arrowvert + \sum\limits_{n=1}^{N}\alpha_{n}\end{align}$$
+$$
+\min\mathcal{L}(b, \mathbf{w},\alpha) $$
+$$
+\Leftrightarrow \min \frac{1}{2}\mathbf{w}^T\mathbf{w} + \sum\alpha_n(1-y_n\mathbf{w}^T\mathbf{z}^n) \\ &\Leftrightarrow \min \frac{1}{2}\mathbf{w}^T\mathbf{w} - \sum \alpha_ny_n\mathbf{z}^n\mathbf{w}^T+ \sum\alpha_n \\
+$$
+$$ \Leftrightarrow {\min} -\frac{1}{2}\mathbf{w}^T\mathbf{w}  + \sum\limits_{n=1}^{N}\alpha_n \\ & \Leftrightarrow -\frac{1}{2} \Arrowvert \sum\limits_{n=1}^{N}\alpha_ny_n\mathbf{z}_n\Arrowvert + \sum\limits_{n=1}^{N}\alpha_{n}
+$$
 
 
 
