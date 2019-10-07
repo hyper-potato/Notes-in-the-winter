@@ -54,7 +54,7 @@ $$\min \limits_{b, \mathbf{w}} (\max \limits_{\alpha_n \geq 0} \mathcal{L}(b, \m
 
 到此为止: 观察上述不等式，最大化与最小化做了交换，这样的不等式，__右式就称为左式的对偶问题，左式的下限就是右式__
 
-此外，**上述不等式关系属于一种弱对偶关系(Weak Duality)** 
+此外，**上述不等式关系属于一种弱对偶关系(Weak Duality)**
 如果满足下面的几个条件，则可以去掉不等号，从而转为强对偶关系(Strong Duality)：
 
 - 原始问题为是凸优化问题 (convex primal)
@@ -121,7 +121,7 @@ $$
 现在我们的问题化简至下式:
 
 
-$$\begin{align*}\max\limits_{\alpha_n \geq 0, \  \sum\alpha_ny_n =0, \ \mathbf{w}=\sum\alpha_ny_n\mathbf{z}^n}\left( -\frac{1}{2}\Arrowvert\sum\limits_{n=1}^{N}\alpha_ny_n\mathbf{z}_n\Arrowvert^2+ \sum\limits_{n=1}^{N}\alpha_{n}\right)\end{align*}$$
+$$\max\limits_{\alpha_n \geq 0, \  \sum\alpha_ny_n =0, \ \mathbf{w}=\sum\alpha_ny_n\mathbf{z}^n}\left( -\frac{1}{2}\Arrowvert\sum\limits_{n=1}^{N}\alpha_ny_n\mathbf{z}_n\Arrowvert^2+ \sum\limits_{n=1}^{N}\alpha_{n}\right)$$
 
 
 
@@ -205,12 +205,3 @@ $b = y_n - \mathbf{w}^T \mathbf{z}_n, \quad \alpha_n > 0$
 看起来我们的对偶问题的规模成功做到了只与数据样本量N有关，与高维空间的维度d̃无关，其实不然，实际内部的计算量还是很大的:
 
 __Q矩阵的元素: $q_{n,m} = y_ny_m\mathbf{z}_m\mathbf{z}_n$，实际为$R^{\tilde{d}}$内的内积!__ 还是没有摆脱高维。不过对偶问题相比原始问题在非线性数据的处理上，求解已经更加容易了。 至于如何在求解$q_{n,m}$的时候，彻底不再依赖d̃ ，那就是下节的内容了，引入带核的SVM。
-
-
-
-
-
-
-
-
-
