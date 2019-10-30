@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="profile" href="https://gmpg.org/xfn/11" />
+  <link rel="pingback" href="https://techvidvan.com/tutorials/xmlrpc.php">
+
+  <title>Fault Tolerance in Spark: Self recovery property &#8211; TechVidvan</title>
+<script>document.documentElement.className = document.documentElement.className.replace("no-js","js");</script>
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="TechVidvan &raquo; Feed" href="https://techvidvan.com/tutorials/feed/" />
+<link rel="alternate" type="application/rss+xml" title="TechVidvan &raquo; Comments Feed" href="https://techvidvan.com/tutorials/comments/feed/" />
+<link id="hu-user-gfont" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,300italic,300,400italic,600&subset=latin,latin-ext" rel="stylesheet" type="text/css"><link rel="alternate" type="application/rss+xml" title="TechVidvan &raquo; Fault Tolerance in Spark: Self recovery property Comments Feed" href="https://techvidvan.com/tutorials/fault-tolerance-in-spark/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/techvidvan.com\/tutorials\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.2.4"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='font-customizer-style-css'  href='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/addons/pro/wfc/front/assets/css/font_customizer.min.css?ver=3.0.7' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://techvidvan.com/tutorials/wp-includes/css/dist/block-library/style.min.css?ver=5.2.4' type='text/css' media='all' />
+<link rel='stylesheet' id='parent-style-css'  href='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/style.css?ver=5.2.4' type='text/css' media='all' />
+<link rel='stylesheet' id='child-style-css'  href='https://techvidvan.com/tutorials/wp-content/themes/hueman-child/style.css?ver=1551853424' type='text/css' media='all' />
+<link rel='stylesheet' id='hph-front-style-css'  href='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/addons/assets/front/css/hph-front.min.css?ver=1.1.15' type='text/css' media='all' />
+<link rel='stylesheet' id='hueman-main-style-css'  href='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/assets/front/css/main.min.css?ver=1.1.15' type='text/css' media='all' />
+<style id='hueman-main-style-inline-css' type='text/css'>
+body { font-family:'Source Sans Pro', Arial, sans-serif;font-size:1.00rem }@media only screen and (min-width: 720px) {
+        .nav > li { font-size:1.00rem; }
+      }.boxed #wrapper, .container-inner { max-width: 5396px; }@media only screen and (min-width: 720px) {
+                .boxed .desktop-sticky {
+                  width: 5396px;
+                }
+              }.sidebar .widget { padding-left: 20px; padding-right: 20px; padding-top: 20px; }::selection { background-color: #ee4243; }
+::-moz-selection { background-color: #ee4243; }a,a+span.hu-external::after,.themeform label .required,#flexslider-featured .flex-direction-nav .flex-next:hover,#flexslider-featured .flex-direction-nav .flex-prev:hover,.post-hover:hover .post-title a,.post-title a:hover,.sidebar.s1 .post-nav li a:hover i,.content .post-nav li a:hover i,.post-related a:hover,.sidebar.s1 .widget_rss ul li a,#footer .widget_rss ul li a,.sidebar.s1 .widget_calendar a,#footer .widget_calendar a,.sidebar.s1 .alx-tab .tab-item-category a,.sidebar.s1 .alx-posts .post-item-category a,.sidebar.s1 .alx-tab li:hover .tab-item-title a,.sidebar.s1 .alx-tab li:hover .tab-item-comment a,.sidebar.s1 .alx-posts li:hover .post-item-title a,#footer .alx-tab .tab-item-category a,#footer .alx-posts .post-item-category a,#footer .alx-tab li:hover .tab-item-title a,#footer .alx-tab li:hover .tab-item-comment a,#footer .alx-posts li:hover .post-item-title a,.comment-tabs li.active a,.comment-awaiting-moderation,.child-menu a:hover,.child-menu .current_page_item > a,.wp-pagenavi a{ color: #ee4243; }.themeform input[type="submit"],.themeform button[type="submit"],.sidebar.s1 .sidebar-top,.sidebar.s1 .sidebar-toggle,#flexslider-featured .flex-control-nav li a.flex-active,.post-tags a:hover,.sidebar.s1 .widget_calendar caption,#footer .widget_calendar caption,.author-bio .bio-avatar:after,.commentlist li.bypostauthor > .comment-body:after,.commentlist li.comment-author-admin > .comment-body:after{ background-color: #ee4243; }.post-format .format-container { border-color: #ee4243; }.sidebar.s1 .alx-tabs-nav li.active a,#footer .alx-tabs-nav li.active a,.comment-tabs li.active a,.wp-pagenavi a:hover,.wp-pagenavi a:active,.wp-pagenavi span.current{ border-bottom-color: #ee4243!important; }.sidebar.s2 .post-nav li a:hover i,
+.sidebar.s2 .widget_rss ul li a,
+.sidebar.s2 .widget_calendar a,
+.sidebar.s2 .alx-tab .tab-item-category a,
+.sidebar.s2 .alx-posts .post-item-category a,
+.sidebar.s2 .alx-tab li:hover .tab-item-title a,
+.sidebar.s2 .alx-tab li:hover .tab-item-comment a,
+.sidebar.s2 .alx-posts li:hover .post-item-title a { color: #33aacc; }
+.sidebar.s2 .sidebar-top,.sidebar.s2 .sidebar-toggle,.post-comments,.jp-play-bar,.jp-volume-bar-value,.sidebar.s2 .widget_calendar caption{ background-color: #33aacc; }.sidebar.s2 .alx-tabs-nav li.active a { border-bottom-color: #33aacc; }
+.post-comments::before { border-right-color: #33aacc; }
+      #header { background-color: #f0f0f0; }
+@media only screen and (min-width: 720px) {
+  #nav-header .nav ul { background-color: #f0f0f0; }
+}
+        #header #nav-mobile { background-color: #000000; }.is-scrolled #header #nav-mobile { background-color: #000000; background-color: rgba(0,0,0,0.90) }#nav-header.nav-container, #main-header-search .search-expand { background-color: #141414; }
+@media only screen and (min-width: 720px) {
+  #nav-header .nav ul { background-color: #141414; }
+}
+        .site-title a img { max-height: 100px; }body { background-color: #f2f2f2; }
+</style>
+<link rel='stylesheet' id='theme-stylesheet-css'  href='https://techvidvan.com/tutorials/wp-content/themes/hueman-child/style.css?ver=1.1.15' type='text/css' media='all' />
+<link rel='stylesheet' id='hueman-font-awesome-css'  href='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/assets/front/css/font-awesome.min.css?ver=1.1.15' type='text/css' media='all' />
+<link rel='stylesheet' id='enlighter-local-css'  href='https://techvidvan.com/tutorials/wp-content/plugins/enlighter/resources/EnlighterJS.min.css?ver=3.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<link rel='https://api.w.org/' href='https://techvidvan.com/tutorials/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://techvidvan.com/tutorials/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://techvidvan.com/tutorials/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Apache Spark DAG: Directed Acyclic Graph' href='https://techvidvan.com/tutorials/apache-spark-dag-directed-acyclic-graph/' />
+<link rel='next' title='Spark Architecture &amp; Internal Working' href='https://techvidvan.com/tutorials/spark-architecture/' />
+<meta name="generator" content="WordPress 5.2.4" />
+<link rel="canonical" href="https://techvidvan.com/tutorials/fault-tolerance-in-spark/" />
+<link rel='shortlink' href='https://techvidvan.com/tutorials/?p=672' />
+<link rel="alternate" type="application/json+oembed" href="https://techvidvan.com/tutorials/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ftechvidvan.com%2Ftutorials%2Ffault-tolerance-in-spark%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://techvidvan.com/tutorials/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ftechvidvan.com%2Ftutorials%2Ffault-tolerance-in-spark%2F&#038;format=xml" />
+<!--[if lt IE 9]>
+<script src="https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/assets/front/js/ie/html5shiv-printshiv.min.js"></script>
+<script src="https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/assets/front/js/ie/selectivizr.js"></script>
+<![endif]-->
+<link rel="icon" href="https://techvidvan.com/tutorials/wp-content/uploads/2017/10/cropped-logo-t-01-01-150x150.png" sizes="32x32" />
+<link rel="icon" href="https://techvidvan.com/tutorials/wp-content/uploads/2017/10/cropped-logo-t-01-01-320x320.png" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="https://techvidvan.com/tutorials/wp-content/uploads/2017/10/cropped-logo-t-01-01-320x320.png" />
+<meta name="msapplication-TileImage" content="https://techvidvan.com/tutorials/wp-content/uploads/2017/10/cropped-logo-t-01-01-320x320.png" />
+		<style type="text/css" id="wp-custom-css">
+			/*
+You can add your own CSS here.
+
+Click the help icon above to learn more.
+
+Use this field to test small chunks of CSS code. For important CSS customizations, it is recommended to modify the style.css file of a child theme.
+http//codex.wordpress.org/Child_Themes
+*/
+
+.current-link {
+    color:#000!important;
+}
+.post-template-default {
+	color: #000!important;
+}		</style>
+		            <style id="grids-css" type="text/css">
+                .post-list .grid-item {float: left; }
+                .cols-1 .grid-item { width: 100%; }
+                .cols-2 .grid-item { width: 50%; }
+                .cols-3 .grid-item { width: 33.3%; }
+                .cols-4 .grid-item { width: 25%; }
+                @media only screen and (max-width: 719px) {
+                      #grid-wrapper .grid-item{
+                        width: 100%;
+                      }
+                }
+            </style>
+              
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-59844492-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-59844492-3');
+</script>
+
+</head>
+
+<body class="post-template-default single single-post postid-672 single-format-standard wp-custom-logo wp-embed-responsive col-3cm boxed header-desktop-sticky header-mobile-sticky unknown">
+
+<div id="wrapper">
+
+  
+  <header id="header" class="top-menu-mobile-on one-mobile-menu top_menu header-ads-desktop header-ads-mobile topbar-transparent no-header-img">
+        <nav class="nav-container group mobile-menu mobile-sticky no-menu-assigned" id="nav-mobile" data-menu-id="header-1">
+  <div class="mobile-title-logo-in-header">                  <p class="site-title"><a class="custom-logo-link" href="https://techvidvan.com/tutorials/" rel="home" title="TechVidvan | Home page"><img src="https://techvidvan.com/tutorials/wp-content/uploads/2017/10/cropped-logo-tech.png" alt="TechVidvan"></a></p>
+                </div>
+        
+                    <!-- <div class="ham__navbar-toggler collapsed" aria-expanded="false">
+          <div class="ham__navbar-span-wrapper">
+            <span class="ham-toggler-menu__span"></span>
+          </div>
+        </div> -->
+        <div class="ham__navbar-toggler-two collapsed" title="Menu" aria-expanded="false">
+          <div class="ham__navbar-span-wrapper">
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+            <span class="line line-3"></span>
+          </div>
+        </div>
+            
+      <div class="nav-text"></div>
+      <div class="nav-wrap container">
+                  <ul class="nav container-inner group mobile-search">
+                            <li>
+                  <form method="get" class="searchform themeform" action="https://techvidvan.com/tutorials/">
+	<div>
+		<input type="text" class="search" name="s" onblur="if(this.value=='')this.value='To search type and hit enter';" onfocus="if(this.value=='To search type and hit enter')this.value='';" value="To search type and hit enter" />
+	</div>
+</form>                </li>
+                      </ul>
+                      </div>
+</nav><!--/#nav-topbar-->  
+  
+  <div class="container group">
+        <div class="container-inner">
+
+                    <div class="group pad central-header-zone">
+                  <div class="logo-tagline-group">
+                                        <p class="site-title"><a class="custom-logo-link" href="https://techvidvan.com/tutorials/" rel="home" title="TechVidvan | Home page"><img src="https://techvidvan.com/tutorials/wp-content/uploads/2017/10/cropped-logo-tech.png" alt="TechVidvan"></a></p>
+                                                                <p class="site-description">TechVidvan</p>
+                                        </div>
+
+                                        <div id="header-widgets">
+                                                </div><!--/#header-ads-->
+                                </div>
+      
+      
+    </div><!--/.container-inner-->
+      </div><!--/.container-->
+
+</header><!--/#header-->
+  
+  <div class="container" id="page">
+    <div class="container-inner">
+            <div class="main">
+        <div class="main-inner group">
+          
+              <section class="content">
+              <div class="page-title pad group">
+          	    		<ul class="meta-single group">
+    			<li class="category"><a href="https://techvidvan.com/tutorials/category/apache-spark/" rel="category tag">Spark Tutorials</a></li>
+    			    			<li class="comments"><a href="https://techvidvan.com/tutorials/fault-tolerance-in-spark/#respond"><i class="far fa-comments"></i>0</a></li>
+    			    		</ul>
+
+    	
+    </div><!--/.page-title-->
+          <div class="pad group">
+              <article class="post-672 post type-post status-publish format-standard has-post-thumbnail hentry category-apache-spark tag-directed-acyclic-graph-dag tag-fault-tolerance-in-apache-spark-reliable-spark-streaming tag-fault-tolerance-in-apache-spark tag-fault-tolerant-stream-processing-with-spark-streaming tag-how-is-fault-tolerance-achieved-in-apache-spark tag-improved-fault-tolerance-and-zero-data-loss-in-apache-spark tag-self-recovery-property-of-spark-fault-tolerance tag-spark-rdd-fault-tolerance">
+    <div class="post-inner group">
+
+      <h1 class="post-title entry-title">Fault Tolerance in Spark: Self recovery property</h1>
+<p class="post-byline">by   <span class="vcard author">
+     <span class="fn"><a href="https://techvidvan.com/tutorials/author/tv-team/" title="Posts by TechVidvan Team" rel="author">TechVidvan Team</a></span>
+   </span> &middot;
+                            Published <time class="published" datetime="January 9, 2018">January 9, 2018</time>
+              &middot; Updated <time class="updated" datetime="March 11, 2019">March 11, 2019</time>
+               </p>
+      
+      <div class="clear"></div>
+
+      <div class="entry themeform">
+        <div class="entry-inner">
+          <h2><b>1. Fault Tolerance in Spark &#8211; </b>Objective</h2>
+<p>This article is all about the Fault Tolerance in Spark property. A feature of self-recovery is one of the most powerful keys on spark platform. Which means at any stage of failure, RDD itself can recover the losses. In this blog, we will learn about spark fault tolerance,<a href="https://techvidvan.com/tutorials/spark-tutorial/"> apache spark</a> high availability and how spark handles the process of spark fault tolerance in detail.</p>
+<p><a href="https://techvidvan.com/tutorials/wp-content/uploads/2018/01/Fault-Tolerance-in-Apache-Spark-01-1.jpg"><img  class="aligncenter size-full wp-image-1928"  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://techvidvan.com/tutorials/wp-content/uploads/2018/01/Fault-Tolerance-in-Apache-Spark-01-1.jpg"  alt="Working of Spark Fault Tolerance" width="1200" height="628" data-srcset="https://techvidvan.com/tutorials/wp-content/uploads/2018/01/Fault-Tolerance-in-Apache-Spark-01-1.jpg 1200w, https://techvidvan.com/tutorials/wp-content/uploads/2018/01/Fault-Tolerance-in-Apache-Spark-01-1-150x79.jpg 150w, https://techvidvan.com/tutorials/wp-content/uploads/2018/01/Fault-Tolerance-in-Apache-Spark-01-1-300x157.jpg 300w, https://techvidvan.com/tutorials/wp-content/uploads/2018/01/Fault-Tolerance-in-Apache-Spark-01-1-768x402.jpg 768w, https://techvidvan.com/tutorials/wp-content/uploads/2018/01/Fault-Tolerance-in-Apache-Spark-01-1-1024x536.jpg 1024w, https://techvidvan.com/tutorials/wp-content/uploads/2018/01/Fault-Tolerance-in-Apache-Spark-01-1-520x272.jpg 520w" data-sizes="(max-width: 1200px) 100vw, 1200px" /></a></p>
+<h2>2. Fault Tolerance in Spark: Self-recovery property in RDD<b><br />
+</b></h2>
+<p><a href="https://techvidvan.com/tutorials/spark-ecosystem/">Apache spark</a> fault tolerance property means RDD, has a capability of handling if any loss occurs. It can recover the failure itself, here fault refers to <strong>failure</strong>. If any bug or loss found, <a href="https://techvidvan.com/tutorials/apache-spark-rdd/">RDD </a>has the capability to recover the loss. We need a redundant element to redeem the lost data. <em>Redundant data</em> plays important role in a self-recovery process. Ultimately, we can recover lost data by redundant data.</p>
+<p>In addition, while working on spark we may apply different transformations on RDDs. That creates a logical execution plan for all tasks executed. This logical execution plan is also popular as l<strong>ineage graph</strong>. In the process, we may lose any RDD as if any fault arises in a machine. By applying the same computation on that node, we can recover our same dataset again. We can apply the same computations by using lineage graph. Hence, This process is <strong>fault tolerance</strong> or <strong>self-recovery process</strong>.</p>
+<h2>3. Fault Tolerance in Spark &#8211; How Spark Handles Fault Tolerance</h2>
+<p>If any of the nodes of processing data gets crashed, that results in a fault in a cluster. In other words, RDD is logically partitioned and each node is operating on a <a href="https://techvidvan.com/tutorials/spark-partition/">partition </a>at any point in time. Operations which are being performed is a series of scala functions. Those operations are being executed on that partition of RDD. This series of operations are merged together and create a <a href="https://techvidvan.com/tutorials/apache-spark-dag-directed-acyclic-graph/">DAG,</a> it refers to <strong>Directed Acyclic Graph</strong>. That means DAG keeps track of operations performed.</p>
+<p>If any node crashes in the middle of an operation, the cluster manager finds out that node. Then, it tries to assign another node to continue the processing at the same place. This node will operate on the same partition of <a href="https://techvidvan.com/tutorials/ways-to-create-rdd-in-spark/">RDD </a>and series of operations. Due to this new node, there is effectively no data loss. Meanwhile, that new node continues the processing smoothly.</p>
+<p>There are basically two fault tolerant significance in <a href="https://techvidvan.com/tutorials/why-apache-spark/">apache spark.</a> They are:</p>
+<ul>
+<li>Since RDDs are<em> immutable</em> in nature. Hence, to create each RDD we need to memorize the lineage of operations. Thus, it might be used on fault-tolerant input dataset for its creation purpose.</li>
+<li>If any partition of an RDD may be lost due to worker node failure, then using the lineage we can recompute it. This is possible from an original fault tolerant <a href="https://techvidvan.com/tutorials/apache-spark-sql-datasets/">dataset</a>.</li>
+</ul>
+<p>To meet fault tolerance for all the RDDs, whole data is being replicated among many nodes in the cluster.</p>
+<p>There are two types of data that demand to be recovered in the event of failure:</p>
+<ul>
+<li>Data received and replicated</li>
+<li>Data received but buffered for replication.</li>
+</ul>
+<p>To understand better, let&#8217;s study them in detail:</p>
+<h3>&#8211; Data received and replicated</h3>
+<p>In this process, data gets replicated on one of the other nodes. So that if any failure occurs we can retrieve the data for further use.</p>
+<h3>&#8211; Data received but buffered for replication<b><br />
+</b></h3>
+<p>In this process, there is no replicated data. The only way to recover it, by getting it again from the source.</p>
+<p>Apache Mesos (Cluster Manager) creates or maintains the backup masters in spark. Hence, that helps spark becoming the master fault tolerant. <strong>Mesos</strong> is an open source software works between an application layer and operating system. It helps to manage applications in the large clustered environment.</p>
+<h2>4. Fault Tolerance in Spark &#8211; Apache Spark High Availability</h2>
+<p>If downtime of any system is tolerable that system is highly available. There is no system with its downtime is zero, so it is an imaginary term for any system. We can say, any machine has an uptime of 97.7% so, the probability of its downtime will be 0.023. Similarly, if we have three systems simultaneously downtime of those systems will be (0.023*0.023*0.023), that is 0.000012167. By this order, uptime of the system will be 99.99. Which is highly acceptable uptime guarantee.</p>
+<h2>5. Fault Tolerance in Spark &#8211; Conclusion</h2>
+<p>Hence, we have seen that <a href="https://techvidvan.com/tutorials/spark-rdd-features/">spark RRDs</a> are <strong>fault tolerant</strong> in nature. So, they track operations to rebuild the lost data at the time of failures. Also, spark&#8217;s fault tolerance property of  RDD enhances the efficiency and we can recover lost data by redundant data. As a result, in case of any failure, there is no need to restart the application from scratch. It also helps in building the performance of the system.</p>
+<p>Reference &#8211; <a href="https://spark.apache.org/">Apache Spark</a></p>
+<p><a href="https://techvidvan.com/tutorials/top-10-apache-spark-books/">Top books for learning Spark</a></p>
+<p>If this blog is beneficial for you, write us a comment.</p>
+          <nav class="pagination group">
+                      </nav><!--/.pagination-->
+        </div>
+
+        
+        <div class="clear"></div>
+      </div><!--/.entry-->
+
+    </div><!--/.post-inner-->
+  </article><!--/.post-->
+
+<div class="clear"></div>
+
+<p class="post-tags"><span>Tags:</span> <a href="https://techvidvan.com/tutorials/tag/directed-acyclic-graph-dag/" rel="tag">Directed Acyclic Graph (DAG)</a><a href="https://techvidvan.com/tutorials/tag/fault-tolerance-in-apache-spark-reliable-spark-streaming/" rel="tag">Fault tolerance in Apache Spark - Reliable Spark Streaming</a><a href="https://techvidvan.com/tutorials/tag/fault-tolerance-in-apache-spark/" rel="tag">Fault Tolerance in Apache Spark.</a><a href="https://techvidvan.com/tutorials/tag/fault-tolerant-stream-processing-with-spark-streaming/" rel="tag">Fault Tolerant Stream Processing with Spark Streaming</a><a href="https://techvidvan.com/tutorials/tag/how-is-fault-tolerance-achieved-in-apache-spark/" rel="tag">How is fault tolerance achieved in Apache Spark?</a><a href="https://techvidvan.com/tutorials/tag/improved-fault-tolerance-and-zero-data-loss-in-apache-spark/" rel="tag">Improved Fault-tolerance and Zero Data Loss in Apache Spark</a><a href="https://techvidvan.com/tutorials/tag/self-recovery-property-of-spark-fault-tolerance/" rel="tag">Self recovery property of Spark fault tolerance</a><a href="https://techvidvan.com/tutorials/tag/spark-rdd-fault-tolerance/" rel="tag">Spark RDD fault tolerance</a></p>
+
+
+    <script type="text/javascript">
+        jQuery( function($) {
+              czrapp.proRelPostsRendered = $.Deferred();
+              var waypoint = new Waypoint({
+                  element: document.getElementById('pro-related-posts-wrapper'),
+                  handler: function(direction) {
+                        if ( 'pending' == czrapp.proRelPostsRendered.state() ) {
+                              var $wrap = $('#pro-related-posts-wrapper');
+                              $wrap.addClass('loading');
+                              czrapp.doAjax( {
+                                      action: "ha_inject_pro_related",
+                                      // => Always get the option from the $_POSTED data in ajax
+                                      related_post_id : 672,
+                                      pro_related_posts_opt : [],
+                                      free_related_posts_opt : "categories",
+                                      layout_class : "col-3cm"
+                                  } ).done( function( r ) {
+                                        if ( r && r.data && r.data.html ) {
+                                            if ( 'pending' == czrapp.proRelPostsRendered.state() ) {
+                                                $.when( $('#pro-related-posts-wrapper').append( r.data.html ) ).done( function() {
+                                                      czrapp.proRelPostsRendered.resolve();
+                                                      $wrap.find('.czr-css-loader').css('opacity', 0);
+                                                      _.delay( function() {
+                                                            $wrap.removeClass('loading').addClass('loaded');
+                                                      }, 800 );
+                                                });
+                                            }
+                                        }
+                                  });
+                        }
+                  },
+                  offset: '110%'
+              });
+        });//jQuery()
+    </script>
+    <div id="pro-related-posts-wrapper"><div class="czr-css-loader czr-mr-loader dark"><div></div><div></div><div></div></div></div>
+
+
+<section id="comments" class="themeform">
+
+	
+					<!-- comments open, no comments -->
+		
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/tutorials/fault-tolerance-in-spark/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://techvidvan.com/tutorials/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required='required' /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200" /></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /><label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='672' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="39e8616de4" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="167"/></p>			</form>
+			</div><!-- #respond -->
+	
+</section><!--/#comments-->          </div><!--/.pad-->
+        </section><!--/.content-->
+          
+
+	<div class="sidebar s1 collapsed" data-position="left" data-layout="col-3cm" data-sb-id="s1">
+
+		<a class="sidebar-toggle" title="Expand Sidebar"><i class="fas icon-sidebar-toggle"></i></a>
+
+		<div class="sidebar-content">
+
+			
+			
+			
+			<div id="pagesinwidgets_page_section-11" class="widget pagesinwidgets_page_section">					<div class="homepage_section">
+						<div style="margin-top: -13px; font-size: 16px;">
+<p><!-- Div Spark Starts --></p>
+<div style="text-align: left; padding: 5px; font-weight: bold; font-size: 18px; color: #f16334!important;"><a style="color: #f16334!important;" href="https://techvidvan.com/tutorials/category/spark/">Spark Tutorials</a></div>
+<ul style="color: #000; margin-left: 5px; margin-right: 3px; padding: 0;">
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-tutorial/">Spark &#8211; Introduction</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-ecosystem/">Spark &#8211; Ecosystem</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-terminologies/">Spark &#8211; Terminologies </a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-rdd/">Spark &#8211; RDD</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-rdd-features/">Spark &#8211; RDD Features</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/why-apache-spark/">Spark &#8211; Why you should learn</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/ways-to-create-rdd-in-spark/">Spark &#8211; Ways to create RDD</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/persistence-and-caching-mechanism/">Spark &#8211; Persistence &#038; Caching</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/sparkcontext-entry-point-spark/">Spark &#8211; SparkContext</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-lazy-evaluation/">Spark &#8211; Lazy Evaluation</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-dag-directed-acyclic-graph/">Spark &#8211; DAG (Directed Acyclic Graph) </a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/fault-tolerance-in-spark/">Spark &#8211; Fault Tolerance</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-architecture/">Spark &#8211; Architecture</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/hadoop-spark-compatibility/">Spark &#8211; Hadoop Compatibility </a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/top-10-apache-spark-books/">Spark &#8211; List of Books</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-vs-hadoop-mapreduce/">Spark vs Hadoop MapReduce</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-partition/">Spark &#8211; Partitions</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-paired-rdd/">Spark &#8211; Paired RDD</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/limitations-of-apache-spark/">Spark &#8211; Limitations</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-performance-tuning/">Spark &#8211; Performance Tuning</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-cluster-manager-yarn-mesos-and-standalone/">Spark &#8211; Cluster Managers</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-map-and-flatmap-comparison/">Spark &#8211; Map vs FlatMap</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-shared-variable/">Spark &#8211; Shared Variables</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-transformation-operations/">Spark &#8211; Transformation Operations</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-sql-tutorial/">SparkSQL &#8211; Introduction</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-sql-dataframe/">SparkSQL &#8211; DataFrame</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-sql-datasets/">SparkSQL &#8211; DataSets</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-rdd-vs-dataframe/">SparkSQL &#8211; RDD vs DataFrame</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-dataframe-vs-datasets/">SparkSQL &#8211; DataFrame vs DataSets</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-spark-rdd-vs-datasets/">SparkSQL &#8211; RDD vs DataSets</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-catalyst-optimizer/">SparkSQL &#8211; Optimization</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-dstream/">Spark Streaming &#8211; DStream</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-streaming-checkpoint/">Spark Streaming &#8211; Checkpointing</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/spark-streaming-stateful-transformations/">Spark Streaming &#8211; Stateful Transformations</a></li>
+<li class="left-sidebar-bottom-line sidebar_new" style="margin-top: 10px; padding: 0;"><a href="https://techvidvan.com/tutorials/apache-storm-vs-spark-streaming/">Spark Streaming vs Storm</a></li>
+</ul>
+<p><!-- Div Spark Ends--></p>
+</div>
+						</div>
+					</div>
+		</div><!--/.sidebar-content-->
+
+	</div><!--/.sidebar-->
+
+	<div class="sidebar s2 collapsed" data-position="right" data-layout="col-3cm" data-sb-id="s2">
+
+	<a class="sidebar-toggle" title="Expand Sidebar"><i class="fas icon-sidebar-toggle"></i></a>
+
+	<div class="sidebar-content">
+
+		
+		
+		<div id="search-2" class="widget widget_search"><form method="get" class="searchform themeform" action="https://techvidvan.com/tutorials/">
+	<div>
+		<input type="text" class="search" name="s" onblur="if(this.value=='')this.value='To search type and hit enter';" onfocus="if(this.value=='To search type and hit enter')this.value='';" value="To search type and hit enter" />
+	</div>
+</form></div><div id="categories-2" class="widget widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+				<li class="cat-item cat-item-65"><a href="https://techvidvan.com/tutorials/category/big-data/">Big Data Tutorials</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="https://techvidvan.com/tutorials/category/hadoop/">Hadoop Tutorials</a>
+</li>
+	<li class="cat-item cat-item-28"><a href="https://techvidvan.com/tutorials/category/hdfs/">HDFS Tutorials</a>
+</li>
+	<li class="cat-item cat-item-29"><a href="https://techvidvan.com/tutorials/category/mapreduce/">MapReduce Tutorials</a>
+</li>
+	<li class="cat-item cat-item-61"><a href="https://techvidvan.com/tutorials/category/scala/">Scala Tutorials</a>
+</li>
+	<li class="cat-item cat-item-60"><a href="https://techvidvan.com/tutorials/category/apache-spark/">Spark Tutorials</a>
+</li>
+		</ul>
+			</div>		<div id="recent-posts-8" class="widget widget_recent_entries">		<h3 class="widget-title">Recent Posts</h3>		<ul>
+											<li>
+					<a href="https://techvidvan.com/tutorials/tableau-vs-qlikview-infographic/">Tableau Vs QlikView Infographic &#8211; Differentiation of Two Data Visualization Tools</a>
+									</li>
+											<li>
+					<a href="https://techvidvan.com/tutorials/apache-pig-operators/">Apache Pig Operators with Syntax and Examples</a>
+									</li>
+											<li>
+					<a href="https://techvidvan.com/tutorials/scala-tuples/">Scala Tuples with Scala Tuple type and Examples</a>
+									</li>
+											<li>
+					<a href="https://techvidvan.com/tutorials/spark-sql-features/">7 shining Apache Spark SQL Features: A Quick Guide</a>
+									</li>
+											<li>
+					<a href="https://techvidvan.com/tutorials/hadoop-spark-integration/">Hadoop Spark Integration: Quick Guide</a>
+									</li>
+											<li>
+					<a href="https://techvidvan.com/tutorials/spark-design-principles/">Apache Spark Design Principles- Why Spark Matters</a>
+									</li>
+											<li>
+					<a href="https://techvidvan.com/tutorials/spark-streaming-window-operations/">Spark Streaming Window Operations- A Quick Guide</a>
+									</li>
+											<li>
+					<a href="https://techvidvan.com/tutorials/spark-executor/">Apache Spark Executor &#8211; For Executing Tasks</a>
+									</li>
+					</ul>
+		</div>
+	</div><!--/.sidebar-content-->
+
+</div><!--/.sidebar-->
+
+        </div><!--/.main-inner-->
+      </div><!--/.main-->
+    </div><!--/.container-inner-->
+  </div><!--/.container-->
+    <footer id="footer">
+
+    
+    
+        <section class="container" id="footer-widgets">
+          <div class="container-inner">
+
+            <div class="pad group">
+
+                                <div class="footer-widget-1 grid one-third ">
+                    <div id="text-10" class="widget widget_text">			<div class="textwidget"><div style="margin-left: 20px; color: #ffffff;font-size:16px;">
+<ul style="margin-left: 100px;">
+<li><span style="color: #000; font-weight: bold;">TechVidvan</span></li>
+<li><a href="#">About us</a></li>
+<li><a href="#">Contact us</a></li>
+<li><a href="#">Terms and Conditions</a></li>
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Disclaimer</a></li>
+</ul>
+<div></div>
+</div>
+</div>
+		</div>                  </div>
+                                <div class="footer-widget-2 grid one-third ">
+                    <div id="text-11" class="widget widget_text">			<div class="textwidget"><div style="margin-left: 20px; color: #ffffff;">
+<ul style="margin-left: 100px; font-size: 16px; text-align: left;">
+<li><span style="color: #000; font-weight: bold;">Hadoop Tutorial</span></li>
+<li><a href="https://techvidvan.com/tutorials/apache-hadoop-tutorials/">Hadoop – Introduction</a></li>
+<li><a href="https://techvidvan.com/tutorials/top-features-of-big-data-hadoop/">Hadoop – Features</a></li>
+<li><a href="https://techvidvan.com/tutorials/hadoop-ecosystem-tutorial/">Hadoop – Ecosystem</a></li>
+<li><a href="https://techvidvan.com/tutorials/limitations-of-hadoop-and-solutions/">Hadoop – Limitation</a></li>
+<li><a href="https://techvidvan.com/tutorials/hadoop-high-availability/ ">Hadoop &#8211; Availability Feature</a></li>
+<li><a href="https://techvidvan.com/tutorials/how-hadoop-works-internally/">Hadoop &#8211; How It Works</a></li>
+</ul>
+<div></div>
+</div>
+</div>
+		</div>                  </div>
+                                <div class="footer-widget-3 grid one-third last">
+                    <div id="text-13" class="widget widget_text">			<div class="textwidget"><div style="color: #ffffff; margin-left: 20px;">
+<ul style="font-size: 16px; text-align: left; margin-left: 100px;">
+<li><span style="color: #000; font-weight: bold;">HDFS Tutorial</span></li>
+<li><a href="https://techvidvan.com/tutorials/hdfs-introduction-tutorial/">HDFS – Introduction</a></li>
+<li><a href="https://techvidvan.com/tutorials/features-of-hdfs/">HDFS – Features</a></li>
+<li><a href="https://techvidvan.com/tutorials/hadoop-hdfs-data-block/">HDFS &#8211; Data Block</a></li>
+<li><a href="https://techvidvan.com/tutorials/hadoop-high-availability/">HDFS &#8211; High Availability</a></li>
+<li><a href="https://techvidvan.com/tutorials/rack-awareness-in-hadoop/">HDFS &#8211; Rack Awareness</a></li>
+</ul>
+<div></div>
+</div>
+</div>
+		</div>                  </div>
+              
+            </div><!--/.pad-->
+
+          </div><!--/.container-inner-->
+        </section><!--/.container-->
+
+    
+    
+    <section class="container" id="footer-bottom">
+      <div class="container-inner">
+
+        <a id="back-to-top" href="#"><i class="fas fa-angle-up"></i></a>
+
+        <div class="pad group">
+
+          <div class="grid one-half">
+                        
+            <div id="copyright">
+                <p>TechVidvan &copy; 2019. All Rights Reserved.</p>
+            </div><!--/#copyright-->
+
+                                                  <div id="credit" style="">
+            <p>Powered by&nbsp;<a class="fab fa-wordpress" title="Powered by WordPress" href="https://wordpress.org/" target="_blank"></a> - Designed with&nbsp;<a href="https://presscustomizr.com/hueman-pro" title="Hueman Pro">Hueman Pro</a></p>
+          </div><!--/#credit-->
+                    
+          </div>
+
+          <div class="grid one-half last">
+                          <ul class="social-links"><li><a rel="nofollow" class="social-tooltip"  title="Follow us on Facebook-square" aria-label="Follow us on Facebook-square" href="#"   style="color:#000000"><i class="fab fa-facebook-square"></i></a></li><li><a rel="nofollow" class="social-tooltip"  title="Follow us on Twitter" aria-label="Follow us on Twitter" href="#" target="_blank"  style="color:#000000"><i class="fab fa-twitter"></i></a></li><li><a rel="nofollow" class="social-tooltip"  title="Follow us on Linkedin-square" aria-label="Follow us on Linkedin-square" href="#" target="_blank"  style="color:#000000"><i class="fab fa-linkedin"></i></a></li><li><a rel="nofollow" class="social-tooltip"  title="Follow us on Youtube-play" aria-label="Follow us on Youtube-play" href="#" target="_blank"  style="color:#000000"><i class="fab fa-youtube"></i></a></li></ul>                      </div>
+
+        </div><!--/.pad-->
+
+      </div><!--/.container-inner-->
+    </section><!--/.container-->
+
+  </footer><!--/#footer-->
+
+</div><!--/#wrapper-->
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WfcFrontParams = {"effectsAndIconsSelectorCandidates":[],"wfcOptions":null};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/addons/pro/wfc/front/assets/js/font-customizer-front.min.js?ver=3.0.7'></script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/addons/assets/front/js/jQuerySharrre.min.js?ver=5.2.4'></script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/addons/pro/header/assets/front/vendors/flickity.min.js?ver=1.1.15'></script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-includes/js/underscore.min.js?ver=1.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var HUParams = {"_disabled":[],"SmoothScroll":{"Enabled":true,"Options":{"touchpadSupport":false}},"centerAllImg":"1","timerOnScrollAllBrowsers":"1","extLinksStyle":"1","extLinksTargetExt":"1","extLinksSkipSelectors":{"classes":["btn","button"],"ids":[]},"imgSmartLoadEnabled":"1","imgSmartLoadOpts":{"parentSelectors":[".container .content",".container .sidebar","#footer","#header-widgets"],"opts":{"excludeImg":[".tc-holder-img"],"fadeIn_options":100}},"goldenRatio":"1.618","gridGoldenRatioLimit":"350","sbStickyUserSettings":{"desktop":false,"mobile":true},"isWPMobile":"","menuStickyUserSettings":{"desktop":"stick_up","mobile":"stick_up"},"mobileSubmenuExpandOnClick":"","submenuTogglerIcon":"<i class=\"fas fa-angle-down\"><\/i>","isDevMode":"","ajaxUrl":"https:\/\/techvidvan.com\/tutorials\/?huajax=1","frontNonce":{"id":"HuFrontNonce","handle":"96cdb4607a"},"isWelcomeNoteOn":"","welcomeContent":"","i18n":{"collapsibleExpand":"Expand","collapsibleCollapse":"Collapse"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/assets/front/js/scripts.min.js?ver=1.1.15'></script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-includes/js/comment-reply.min.js?ver=5.2.4'></script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-content/plugins/enlighter/resources/mootools-core-yc.js?ver=3.5'></script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-content/plugins/enlighter/resources/EnlighterJS.min.js?ver=3.5'></script>
+<script type='text/javascript' src='https://techvidvan.com/tutorials/wp-includes/js/wp-embed.min.js?ver=5.2.4'></script>
+<script async="async" type='text/javascript' src='https://techvidvan.com/tutorials/wp-content/plugins/akismet/_inc/form.js?ver=4.1.2'></script>
+<!--[if lt IE 9]>
+<script src="https://techvidvan.com/tutorials/wp-content/themes/hueman-pro/assets/front/js/ie/respond.js"></script>
+<![endif]-->
+<script type="text/javascript">/* <![CDATA[ */EnlighterJS_Config = {"selector":{"block":"pre.EnlighterJSRAW","inline":"code.EnlighterJSRAW"},"language":"generic","theme":"classic","indent":2,"hover":"hoverEnabled","showLinenumbers":true,"rawButton":true,"infoButton":true,"windowButton":true,"rawcodeDoubleclick":false,"grouping":true,"cryptex":{"enabled":false,"email":"mail@example.tld"}};!function(){var a=function(a){var b="Enlighter Error: ";console.error?console.error(b+a):console.log&&console.log(b+a)};return window.addEvent?"undefined"==typeof EnlighterJS?void a("Javascript Resources not loaded yet!"):"undefined"==typeof EnlighterJS_Config?void a("Configuration not loaded yet!"):void window.addEvent("domready",function(){EnlighterJS.Util.Init(EnlighterJS_Config.selector.block,EnlighterJS_Config.selector.inline,EnlighterJS_Config)}):void a("MooTools Framework not loaded yet!")}();;/* ]]> */</script></body>
+</html>

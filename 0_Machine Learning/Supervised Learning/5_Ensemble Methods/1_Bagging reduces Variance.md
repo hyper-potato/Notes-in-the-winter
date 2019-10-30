@@ -14,6 +14,20 @@ Ensemble methods work best when the predictors are as independent from one anoth
 
 Ensemble has a similar bias but a lower variance than a single predictor trained on the original training set.
 
+
+
+## Setting
+
+when n goes infinity, only 63% data from original data will show in a sample, which ensures the diversity of sub models
+
+(1-1/N)^N
+
+
+
+
+
+
+
 Bootstrapping introduces a bit more diversity in the subsets that each predictor is trained on, so bagging ends up with a slightly **higher bias than pasting**, but this also means that predictors end up being **less** correlated so the ensemble’s **variance** is reduced. 
 
 ## Bagging Reduces Variance

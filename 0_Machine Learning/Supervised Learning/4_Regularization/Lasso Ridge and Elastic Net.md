@@ -26,9 +26,9 @@ In order to do so, the method applies a shrinking (regularization) process where
 
 In practice, the tuning parameter α that controls the strength of the penalty assumes great importance. Indeed, when α is sufficiently large, coefficients are forced to be exactly equal to zero. This way, dimensionality can be reduced. The larger the parameter α, the more the number of coefficients are shrunk to zero. On the other hand, if α = 0, we have just an OLS (Ordinary Least Squares) regression.
 
-#  
 
-# There are many advantages of using the LASSO method.
+
+There are many advantages of using the LASSO method.
 
 1. First of all, it can provide a very good prediction accuracy, because shrinking and removing the coefficients can reduce variance without a substantial increase of the bias, this is especially useful when you have a small number of observation and a large number of features. In terms of the tuning parameter α we know that bias increases and variance decreases when α increases, indeed a trade-off between bias and variance has to be found.
 2. Moreover, the LASSO helps to increase the model interpretability by eliminating irrelevant variables that are not associated with the response variable, this way also overfitting is reduced. This is the point where we are more interested in because in this paper the focus is on the feature selection task.

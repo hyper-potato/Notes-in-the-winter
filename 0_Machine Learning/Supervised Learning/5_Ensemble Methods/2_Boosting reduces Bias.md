@@ -1,5 +1,0 @@
-# Boosting
-
-
-
-## Boosting reduces Bias

@@ -51,3 +51,8 @@ $\underset{all \ a_{n}}{\max}L(a) = \sum_{n=1}^{N}a_{n} – \frac{1}{2}\sum_{n=1
 
 
 
+### Multi  classification
+
+one over one 
+
+one over rest

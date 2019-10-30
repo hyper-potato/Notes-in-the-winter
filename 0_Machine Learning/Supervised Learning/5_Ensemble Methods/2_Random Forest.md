@@ -2,6 +2,10 @@
 
 Random Forest is an ensemble of Decision Trees, generally trained via the bagging method (or sometimes pasting).
 
+(random forest has a 'feature importance' by product.
+
+
+
 
 
 One of the most famous and useful bagged algorithms is the **Random Forest**
@@ -10,13 +14,15 @@ The algorithm works as follows:
 
 1. Sample m data sets D1,…,Dm from D with replacement.
 
-2. For each Dj train a full decision tree hj() (max-depth = ∞) with one small modification: before each split randomly subsample **k ≤ d** features (without replacement) and only consider these for your split. (This further increases the variance of the trees.) Find the best from these k features. (for every single split, we sample k features a fresh)
+2. For each Dj, train a full decision tree hj() (max-depth = ∞) with one small modification: before each split randomly subsample **k ≤ d** features (without replacement) and only consider these for your split. (This further increases the variance/randomness of the trees.) Find the best from these k features. (for every single split, we sample k features a fresh)
+
+   (Ensure Bias is roughly low)
 
 3. The final classifier is $h(\mathbf{x})=\frac{1}{m}\sum_{j=1}^m h_j(\mathbf{x})$.
 
-   
+    
 
-   
+    
 
    **hyperparameters: K and m**   
 
@@ -42,3 +48,6 @@ There are two reasons for this:
 
 
 
+## Rotation forest
+
+randowm forest works best when dataset is orthogal to y axis, and decision trees can do that
