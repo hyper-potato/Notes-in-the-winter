@@ -24,10 +24,6 @@ when n goes infinity, only 63% data from original data will show in a sample, wh
 
 
 
-
-
-
-
 Bootstrapping introduces a bit more diversity in the subsets that each predictor is trained on, so bagging ends up with a slightly **higher bias than pasting**, but this also means that predictors end up being **less** correlated so the ensemble’s **variance** is reduced. 
 
 ## Bagging Reduces Variance
@@ -107,11 +103,6 @@ Notice: (cannot use W.L.L.N here, W.L.L.N only works for i.i.d. samples). Howeve
   This is an estimate of the test error, because for each training point we used the subset of classifiers that never saw that training point during training. if m is sufficiently large, the fact that we take out some classifiers has no significant effect and the estimate is pretty reliable.
 
   
-
-- 
-
-
-
 
 
 

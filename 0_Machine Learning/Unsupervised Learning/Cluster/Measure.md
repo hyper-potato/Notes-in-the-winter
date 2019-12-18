@@ -15,7 +15,6 @@ Price (p): The data is probably a Poisson distribution. __Confirm this__. If you
 
 Combine the data by using root mean squared error (RMSE). Here, the similarity is .
 
-
 eg. color -- numeric RGB values
     postcode --  latitude and longitude
     

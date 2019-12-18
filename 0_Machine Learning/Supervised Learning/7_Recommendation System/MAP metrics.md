@@ -1,0 +1,256 @@
+[sdsawtelle.github.io](http://sdsawtelle.github.io/blog/output/mean-average-precision-MAP-for-recommender-systems.html "Evening Session")
+
+
+
+# MAP for Recommender Algorithms[¶][1]
+
+
+
+(Ok there's one pun.) Since you're reading this you've probably just encountered the term "Mean Average Precision", or MAP. This is a very popular evaluation metric for algorithms that do information retrieval, like google search. **If you have an algorithm that is returning a ranked ordering of items, each item is either hit or miss (like relevant vs. irrelevant search results) and items further down in the list are less likely to be used (like search results at the bottom of the page), then maybe MAP is the metric for you!**
+
+
+
+It happens that MAP is also useful for user recommendation systems, like when Amazon shows you a short list of products it thinks you might _also_ want to purchase after you've added something to your cart. **Using MAP to evaluate a recommender algorithm implies that you are treating the recommendation like a ranking task.** This often makes perfect sense! A user has a finite amount of time and attention, so we want to know not just five products they might like, but also which are most liked or which we are most confident of. This lets you show the top recommendations first and maybe market them more aggressively.
+
+For this kind of task we want a metric that rewards us for getting lots of "correct" or relevant recommendations, and rewards us for having them earlier on in the list (higher ranked). Before we can construct this metric though, we need **Precision** and **Recall**. (That's what I call my left and right fist.)
+
+
+
+##  Precision and Recall of a Binary Classifier[¶][2]
+
+I conveniently just learned about these terms in Andrew Ng's ML course on Coursera, so let's start there. If we have binary classifier for predicting having a condition ($y=1$) vs not, then we define:
+
+$\begin{align*} \textrm{precision:} \qquad P = \frac{\textrm{# correct positive}}{\textrm{# predicted positive}}\\ \\ \textrm{recall:} \qquad r  = \frac{\textrm{# correct positive}}{\textrm{# with condition}} \end{align*}$
+
+In maybe more familiar terminology, precision is (1 - _false positive rate_), and the recall is (1 - _false negative rate_). Actually I'm baffled as to why two new terms were needed for this.
+
+
+
+##  Precision and Recall of Recommender Systems[¶][3]
+
+OK so how does this map (ding!) to recommender systems? In modeling pretty much all recommendation systems we're going to have the following quantities with their corresponding ones in the binary classifier:
+
+
+|  Terminology in Binary Classifier  |  Terminology in Recommender System  |
+| ---- | ----  |
+|  # with condition  |  # of all the possible relevant ("correct") items for a user  |
+|  # predicted positive  |  # of items we recommended (we predict these items as "relevant")  |
+|  # correct positives  |  # of our recommendations that are relevant  |
+
+OK so now with almost no effort we have:
+
+$\begin{align*} \textrm{recommender system precision:} \qquad P = \frac{\textrm{# of our recommendations that are relevant}}{\textrm{# of items we recommended}}\\ \\ \textrm{recommender system recall:} \qquad r  = \frac{\textrm{# of our recommendations that are relevant}}{\textrm{# of all the possible relevant items}} \end{align*}$
+
+Let's say I am asked to recommend $N=5$ products (this means I predict "positive" for five products), from all the possible products there are only $m=3$ that are actually relevant to the user, and my successes and failures in my ranked list are $[0, 1, 1, 0, 0]$. Then:
+
+* \#of items we recommended = 5
+* \# of our recommendations that are relevant = 2
+* \# of all the possible relevant items = 3
+* precision = 2/5
+* recall = 2/3
+
+Here's a visual example: we're being asked to recommend financial "products" to Bank users and we compare our recommendations to the products that a user actually added the following month (those are all the possible "relevant" ones).
+
+![](http://sdsawtelle.github.io/blog/output/images/post-mean-avg-precision/area_pic.png)
+
+
+
+###  Precision and Recall at Cutoff k[¶][5]
+
+So that's nice, but Precision and Recall don't seem to care about ordering. So instead let's talk about **precision and recall at cutoff k**. Imagine taking your list of $N$ recommendations and considering only the first element, then only the first two, then only the first three, etc... these subsets can be indexed by $k$. **Precision and Recall at cutoff k, $P(k)$ and $r(k)$, are simply the precision and recall calculated by considering only the subset of your recommendations from rank 1 through $k$**. Really it would be more intuitive to say "up to cutoff k" rather than "at".
+
+Sticking with the bank example, here is what I mean: 
+
+![](http://sdsawtelle.github.io/blog/output/images/post-mean-avg-precision/subset_pic.png)
+
+
+
+##  Average Precision[¶][7]
+
+OK are you ready for Average Precision now? If we are asked to recommend $N$ items, the number of relevant items in the full space of items is $m$, then:
+
+$\begin{align*} \textrm{AP@N} = \frac{1}{m}\sum_{k=1}^N \textrm{($P(k)$ if $k^{th}$ item was relevant)} = \frac{1}{m}\sum_{k=1}^N P(k)\cdot rel(k), \end{align*}$
+
+where $rel(k)$ is just an indicator that says whether that $k^{th}$ item was relevant ($rel(k)=1$) or not ($rel(k)=0$). I'd like to point out that instead of recommending $N$ items would could have recommended, say, $2N$, but the AP@N metric says we only care about the average precision up to the $N^{th}$ item.
+
+
+
+###  Examples and Intuition for AP[¶][8]
+
+Let's imagine recommending $N=3$ products (AP@3) to a user who actually added a total of $m=3$ products. Here are some examples of outcomes for our algorithm:
+
+
+|  **____**Recommendations**____**  |  **____**Precision @k's**____**  |  **____**AP@3**____**  |
+| ---- | ---- | ----  |
+|  [0, 0, 1]  |  [0, 0, 1/3]  |  (1/3)**(1/3)** = 0.11  |
+|  [0, 1, 1]  |  [0, 1/2, 2/3]  |  (1/3)[(1/2) + **(2/3)**] = 0.38  |
+|  [1, 1, 1]  |  [1/1, 2/2, 3/3]  |  (1/3)[(1) + (2/2) + **(3/3)**] = 1  |
+
+First notice that the more correct recommendations I have, the larger my AP. This is because the $k^{th}$ subset precision is included in AP sum only if you got the $k^{th}$ recommendation correct, thus **AP rewards you for giving correct recommendations** (surprising absolutely no one).
+
+There is more subtletly here though! In each row I've bolded the $P(k)$ term which came from the correct recommendation in the _third_ slot. Notice it is larger when there have been more successes in front of it - that's because the precision of the $k^{th}$ subset is higher the more correct guesses you've had up to point $k$. Thus, **AP rewards you for front-loading the recommendations that are most likely to be correct**.
+
+These two features are what makes AP a useful metric when your algorithm is returning a ranked ordering of items where each item is either correct or incorrect, and items further down in the list are less likely to be used. One more set of examples might make this second point a little clearer.
+
+
+|  **____**Recommendations**____**  |  **____**Precision @k's**____**  |  **____**AP@3**____**  |
+| ---- | ---- | ----  |
+|  [1, 0, 0]  |  [1/1, 1/2, 1/3]  |  (1/3)(1) = 0.33  |
+|  [0, 1, 0]  |  [0, 1/2, 1/3]  |  (1/3)(1/2) = 0.15  |
+|  [0, 0, 1]  |  [0, 0, 1/3]  |  (1/3)(1/3) = 0.11  |
+
+In all these cases you got just one recommendations correct, but AP was higher the further up the ranking that correct guess fell.
+
+A final point of note is that adding another recommendation can never _decrease_ your AP score, so if you are asked for $N$ recommendations give all of them, even if you don't feel very confident about the ones lower down the list! **AP will never penalize you for tacking on additional recommendations to your list - just make sure you front-load the best ones.**
+
+
+
+##  The "Mean" in MAP[¶][9]
+
+OK that was Average Precision, which applies to a single data point (like a single user). What about MAP@N? All that remains is to average the AP@N metric over all your $|U|$ users. Yes, an average of an average.
+
+$\begin{align*} \textrm{MAP@N} = \frac{1}{|U|}\sum_{u=1}^|U|(\textrm{AP@N})_u = \frac{1}{|U|} \sum_{u=1}^|U| \frac{1}{m}\sum_{k=1}^N P_u(k)\cdot rel_u(k). \end{align*}$
+
+
+
+###  Common Variations on AP Formula[¶][10]
+
+Often you see the AP metric modified slightly when there might be more possible correct recommendations then the number of recommendations you are asked to give. Say, a super active user at the bank who adds $m=10$ accounts the next month, while your algorithm is only supposed to report $N=5$. In this case the normalization factor used is $1/\textrm{min}(m, N)$, which prevents your AP score from being unfairly suppressed when your number of recommendations couldn't possibly capture all the correct ones.
+
+$$\textrm{AP@N} = \frac{1}{\textrm{min}(m,N)}\sum_{k=1}^N P(k)\cdot rel(k)$$
+
+You also might encounter a somewhat sloppier usage where there is no indicator function $rel(k)$ in the AP@N sum. In this case the precision at cutoff $k$ is being implictly defined to be zero when the $k^{th}$ recommendation was incorrect, that way it still doesn't contribute to the sum:
+
+$\textrm{AP@N} = \frac{1}{m}\sum_{k=1}^N P(k),\    P(k) = 0 \textrm{ if $k^{th}$ element is irrelevant / incorrect}$
+
+Finally, if it's possible for there to be no relevant or correct recommendations possible ($m=0$) then often the AP is defined to be zero for those points. Note that it will have the effect of dragging the MAP number of an algorithm down the more users there are who didn't actually add any products. This doesn't matter for comparing the performance of two algorithms on the same data set, but it does mean that you shouldn't place any kind of absolute meaning on the final number.
+
+$\begin{align*} \textrm{AP@N} = \frac{1}{\textrm{min}(m,N)}\sum_{k=1}^N P(k)\cdot rel(k) \qquad \textrm{ if $m\neq 0$,}\\ AP = 0 \qquad \textrm{if $m=0$}. \end{align*}$
+
+
+
+
+
+##  So Why Did I Bother Defining Recall?[¶][11]
+
+There is an alternative formulation for the AP in terms of Precision _and_ Recall, and I didn't want you to feel left out when people start talking about it at parties:
+
+$\begin{align*} \textrm{AP@N} = \sum_{k=1}^N \textrm{(precision at $k$)}\cdot\textrm{(change in recall at $k$)} = \sum_{k=1}^N P(k)\Delta r(k), \end{align*}$
+
+where $\Delta r(k)$ is the change in recall from the $k-1^{th}$ to the $k^{th}$ subset. This formulation is actually kind of nice because we don't need to "leave out" terms in the sum with an indicator function, instead the change in recall term is zero when the $k^{th}$ recommendation is incorrect so those guys get wiped out anyway. Hopefully you noticed that the prefactor $1/m$ is missing too, it turns out that when the $k^{th}$ recommendation _is_ correct the change in recall is exactly $1/m$. OK let me stop talking and make with the examples. Same as before, recommending $N=3$ products (AP@3) to a user who actually added a total of $m=3$ products:
+
+
+|  ____**Recs**____  |  ____Prec @k's____  |  **Recall @k's____**  |  **____Change r @k's**____  |  **____AP@3____**  |
+| ---- | ---- | ---- | ---- | ----  |
+|  [0, 0, 1]  |  [0, 0, 1/3]  |  [0, 0, 1/3]  |  [0, 0, 1/3]  |  (1/3)(1/3) = 0.11  |
+|  [0, 1, 1]  |  [0, 1/2, 2/3]  |  [0, 1/3, 2/3]  |  [0, 1/3, 1/3]  |  (1/3)(1/2) + (1/3)(2/3) = 0.38  |
+|  [1, 1, 1]  |  [1, 2/2, 3/3]  |  [1/3, 2/3, 3/3]  |  [1/3, 1/3, 1/3]  |  (1/3)(1) + (1/3)(1) + (1/3)(1) = 1  |
+
+
+|  **____**Recs**____**  |  **____**Prec @k's**____**  |  **____**Recall @k's**____**  |  **____**Change r @k's**____**  |  **____**AP@3**____**  |
+| ---- | ---- | ---- | ---- | ----  |
+|  [1, 0, 0]  |  [1, 1/2, 1/3]  |  [1/3, 1/3, 1/3]  |  [1/3, 0, 0]  |  (1)(1/3) = 0.33  |
+|  [0, 1, 0]  |  [0, 1/2, 1/3]  |  [0, 1/3, 1/3]  |  [0, 1/3, 0]  |  (1/2)(1/3) = 0.15  |
+|  [0, 0, 1]  |  [0, 0, 1/3]  |  [0, 0, 1/3]  |  [0, 0, 1/3]  |  (1/3)(1/3) = 0.11  |
+
+Hopefully you can convince yourself that you are getting exactly the same result for this formulation of AP as we got before.
+
+
+
+##  Graphical Representation of $P(i)$ and $r(i)$[¶][12]
+
+We can think of $P(i)$ and $r(i)$ as functions of the index $i$, and we can plot them accordingly, e.g. $P(i)$ vs. $i$. The resulting plot would of course depend heavily on the particular sequence of correct/incorrect recommendations that we are indexing through. More often what you see is a plot in the $P(i)$ x $r(i)$ plane that traces out the trajectory of both these quantities as you index through the list of recommendations. Analytically we can already imagine what such a trajectory will do: if at the next $i$ we got a correct recommendation then both precision and recall should increase, whereas if we got that recommendation wrong then precision will decrease while recall will be unchanged.
+
+Let me show you :)
+
+
+
+
+```python
+recoms = [0, 1, 0, 1, 0, 1, 1]  # N = 7
+NUM_ACTUAL_ADDED_ACCT = 5
+precs = []
+recalls = []
+   
+for indx, rec in enumerate(recoms):
+    precs.append(sum(recoms[:indx+1])/(indx+1))
+    recalls.append(sum(recoms[:indx+1])/NUM_ACTUAL_ADDED_ACCT)
+   
+print(precs)
+print(recalls) 
+```
+
+    [0.0, 0.5, 0.3333333333333333, 0.5, 0.4, 0.5, 0.5714285714285714]
+    [0.0, 0.2, 0.2, 0.4, 0.4, 0.6, 0.8]
+
+
+
+
+
+```python
+import matplotlib.pyplot as plt
+% matplotlib inline
+fig, ax = plt.subplots()
+ax.plot(recalls, precs, markersize=10, marker="o")
+ax.set_xlabel("Recall")
+ax.set_ylabel("Precision")
+ax.set_title("P(i) vs. r(i) for Increasing $i$ for AP@7")
+```
+
+
+    <matplotlib.text.Text at 0x245c3b25fd0>
+
+
+
+![](data:image/png;base64,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%0AYII=)
+
+The jaggedness of this type of plot has lead to the creation of some "smoothed" or "interpolated" average precision metrics as alternatives, but I'll not talk about them here.
+
+
+
+##  To Summarize...[¶][14]
+
+MAP is very popular evaluation metric for algorithms that do information retrieval like google search results, but it also can apply to user-targeted product recommendations. If you have an algorithm that is returning a ranked ordering of items, each item is either hit or miss (like relevant vs. irrelevant search results) and items further down in the list are less likely to be used/seen (like search results at the bottom of the page), then MAP might be a useful metric.
+
+Using MAP to evaluate a recommender algorithm implies that you are treating the recommendation like a ranking task. This often makes perfect sense since a user has a finite amount of time and attention and we want to show the top recommendations first and maybe market them more aggressively.
+
+In recommendation systems MAP computes the mean of the Average Precision (AP) over all your users. The AP is a measure that takes in a ranked list of your $N$ recommendations and compares it to a list of the true set of "correct" or "relevant" recommendations for that user. AP rewards you for having a lot of "correct" (relevant) recommendations in your list, and rewards you for putting the most likely correct recommendations at the top (you are penalized more when incorrect guesses are higher up in the ranking). So order of "hits" and "misses" matters a lot in computing an AP score, but once you have front-loaded your best guesses you can never _decrease_ your AP by tacking on more.
+
+
+
+
+
+
+
+
+
+Further Reading on MAP
+
+- from the source itself... [wikipedia](https://en.wikipedia.org/wiki/Information_retrieval#Average_precision)
+- from an all-things-ML blog [fast ML](http://fastml.com/what-you-wanted-to-know-about-mean-average-precision/)
+- from [Stanford class slides](http://web.stanford.edu/class/cs276/handouts/EvaluationNew-handout-6-per.pdf)
+- from a [DS blog](https://sanchom.wordpress.com/tag/average-precision/)
+- from a [Stanford online book](http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html)
+- from June Andrews on why [MAP is "mean"](https://juneandrews.com/2014/12/15/mean-average-precision-isnt-so-nice/)
+- from [Cornell class slides](http://www.cs.cornell.edu/courses/cs4300/2013fa/lectures/metrics-2-4pp.pdf)
+
+
+
+
+
+
+
+[1]: http://sdsawtelle.github.io#MAP-for-Recommender-Algorithms
+[2]: http://sdsawtelle.github.io#Precision-and-Recall-of-a-Binary-Classifier
+[3]: http://sdsawtelle.github.io#Precision-and-Recall-of-Recommender-Systems
+[4]: http://sdsawtelle.github.io/images/post-mean-avg-precision/area_pic.png
+[5]: http://sdsawtelle.github.io#Precision-and-Recall-at-Cutoff-k
+[6]: http://sdsawtelle.github.io/images/post-mean-avg-precision/subset_pic.png
+[7]: http://sdsawtelle.github.io#Average-Precision
+[8]: http://sdsawtelle.github.io#Examples-and-Intuition-for-AP
+[9]: http://sdsawtelle.github.io#The-%26quot%3BMean%26quot%3B-in-MAP
+[10]: http://sdsawtelle.github.io#Common-Variations-on-AP-Formula
+[11]: http://sdsawtelle.github.io#So-Why-Did-I-Bother-Defining-Recall%3F
+[12]: http://sdsawtelle.github.io#Graphical-Representation-of-%24P%28i%29%24-and-%24r%28i%29%24
+[14]: http://sdsawtelle.github.io#To-Summarize...
+

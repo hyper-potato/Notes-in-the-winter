@@ -71,20 +71,15 @@ Confidence Gives Direction: Conf(X→Y) != Conf(Y→X)
 
 
 
-One drawback of the confidence measure is that it might misrepresent the importance of an association. This is because it only accounts for how popular apples are, but not beers. If beers are also very popular in general, there will be a higher chance that a transaction containing apples will also contain beers, thus inflating the confidence measure. To account for the base popularity of both constituent items, we use a third measure called lift.
-
-
-
 #### Probabilistic interpretation of Support and Confidence
 
-supp(Z ) = nZ /n
-
-corresponds to an estimate for P(EZ )-hat = nZ /n, the probability for the event that itemset Z is contained in a transaction. 
+supp(Z ) = $n_Z /n$ corresponds to an estimate for $P(\hat EZ) = n_Z /n$, the probability for the event that itemset Z is contained in a transaction. 
 
 Confidence can be interpreted as an estimate for the conditional probability P(EY|EX ) = P(EX ∩EY) / P(EX ) This directly follows the definition of confidence: 
 
 - A rule R is A ⇒ B where A and B are disjoint patterns. 
-- Support(A ⇒ B)=P(A ∪ B) 
+
+- Support(A ⇒ B) = P(A ∪ B) 
 
 - Confidence(A ⇒ B)=P(B|A)=posterior probability 
 
@@ -92,7 +87,9 @@ Confidence can be interpreted as an estimate for the conditional probability P(E
 #### Weaknesses of Support and Confidence
 
 Support suffers from the ‘rare item problem’: Infrequent items not meeting minimum support are ignored which is problematic if rare items are important.
- E.g. rarely sold products which account for a large part of revenue or profit. Typical support distribution (retail point-of-sale data with 169 items): 
+E.g. rarely sold products which account for a large part of revenue or profit. Typical support distribution (retail point-of-sale data with 169 items): 
+
+One drawback of the confidence measure is that it might misrepresent the importance of an association. This is because it only accounts for how popular apples are, but not beers. If beers are also very popular in general, there will be a higher chance that a transaction containing apples will also contain beers, thus inflating the confidence measure. To account for the base popularity of both constituent items, we use a third measure called lift.
 
 
 
@@ -102,8 +99,7 @@ This says how likely item Y is purchased when item X is purchased, while control
 
 <img src="https://annalyzin.files.wordpress.com/2016/03/association-rule-lift-eqn.png?w=566&amp;h=80" alt="Association Rule Lift eqn" style="zoom: 67%;" />
 
-**When Lift > 1, the occurrence of
- X** ⇒ **Y together is more likely than what you would expect by chance** 
+**When Lift > 1, the occurrence of  X ⇒ Y together is more likely than what you would expect by chance** 
 
 
 
@@ -119,7 +115,7 @@ Lift represents a measure of the distance between P(B|A) and P(B), or equivalent
 P(A,B) = P(A)P(B)  is not true. 
 
 The expected confidence is the value that confidence would take if A and B were in fact independent.
- 
+
 
 
 
