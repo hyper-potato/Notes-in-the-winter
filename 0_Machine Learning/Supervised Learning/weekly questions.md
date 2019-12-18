@@ -1,4 +1,6 @@
-## Week 2
+# Weekly Self Assessment Questions
+
+##  Week 2
 
 1. How to select K in KNN? Why need a separate validation set?
 1) try some K
@@ -297,29 +299,33 @@ MAE: mean absolute error
 
 
 ## Week 6
+
 1. In predictive analytical domain, what is the source of error making? What is bias variance trade-off? 
-
-
 2. The workflow of bagging framework. What problem bagging can solve?
+
+
 3. If we have a bagging version of decision tree, what is the difference with random forest?
-
-
-1. The workflow of boosting framework. What problem boosting can solve?
-2. The difference of adaboosting/xgboosting/gradient boosting?
-3. The workflow of stacking framework. What problem stacking can solve?
-4. The different algorithm of feature selection, their difference and similarity.
+2. The workflow of boosting framework. What problem boosting can solve?
+3. The difference of adaboosting/xgboosting/gradient boosting?
+4. The workflow of stacking framework. What problem stacking can solve?
+5. The different algorithm of feature selection, their difference and similarity.
 
 ##  Week 8-10
 
-- The workflow of basic Neural Network.
-
-
-
-
+- The workflow of basic Neural Network
 
 - How to adjust Neural Network architecture to solve difference problems? (e.g. regression/binary classification/multi-class classification)
 - What happened if we just add more layers to the basic Neural Network architecture? Why it doesn't work out?
 - How deep neural network solve the gradient vanish problem? Any Tricks?
+
+The simplest solution is to use other activation functions, such as ReLU, which doesn’t cause a small derivative.
+
+Residual networks are another solution, as they provide residual connections straight to earlier layers. As seen in Image 2, the residual connection directly adds the value at the beginning of the block, **x**, to the end of the block (F(x)+x). This residual connection doesn’t go through activation functions that “squashes” the derivatives, resulting in a higher overall derivative of the block.
+
+
+
+
+
 - Why need drop out in deep neural network ?
 - How to do regularization in deep neural network ? 
 - Why batch normalization matters deep neural network ?
@@ -329,7 +335,7 @@ MAE: mean absolute error
 - Why we need Pooling layer in CNN?
 - The workflow of LSTM and GRU. Why LSTM/GRU can combat the vanish gradient problem?
 
-Week 12-13
+## Week 12-13
 
 - The difference between collaborative-based and content-based recommendation approaches.
 - The workflow of item-based/user-based collaborative filtering and their difference.

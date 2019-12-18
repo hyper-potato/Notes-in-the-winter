@@ -1,6 +1,7 @@
 # Clustering
 
 ## Basics
+
 **Grouping** unlabeled examples is called clustering.
 
 As the examples are unlabeled, clustering relies on unsupervised machine learning.  If the examples are labeled, then clustering becomes classification.
@@ -12,25 +13,55 @@ As the examples are unlabeled, clustering relies on unsupervised machine learnin
   o Low inter-similarity 
   ​	• I.e., any two data points / objects that are assigned into different clusters should not be very similar to each other, otherwise they should have been assigned into the same cluster (e.g., customers with very different demographic information) 
 
-
 ### Similarity
 
 - **Direct similarity** (based on direct distance, one might assume that points B and C are more likely to be in the same cluster than points A and B) 
 - **Contextual similarity** (with additional information, it is clear that points A and B intuitively belong to the same cluster, and that B and C should be in different clusters) 
 - Conceptual similarity (in the general/philosophical sense, the concept of similarity can become very complex; e.g., here A and B belong to the same cluster not because of direct distance or the context of other points, but because they represent a common underlying concept, i.e., a rectangle, as opposed to C which represents a different concept, a triangle) 
 
-
 ### Metrics
 
-- Two records: *A*=(*a*1, ..., *ak*), *B*=(*b*1, ..., *bk*)
-   o Here *k* is the number of attributes in your dataset (e.g., table) 
+#### Distance Metrics: Basics
+
+- Required (mathematical) properties:
+
+  o Isolation (or identity of indiscernibles)
+
+  ​	• d(A,B) = 0 if and only if A=B
+
+  ​	• I.e., if distance between two objects is 0, they are indistinguishable
+
+  o Non-negativity
+
+  ​	• d(A,B) ³ 0
+
+  ​	• I.e., distance can either be 0, or a positive number
+
+  o **Symmetry**
+
+  ​	• d(A,B) = d(B,A)
+
+  ​	• I.e., distance from A to B is the same as from B to A (is not always true in real world)
+
+  **o Triangle inequality**
+
+  ​	• d(A,B) <= d(A,C) + d(C,B)
+
+  ​	• I.e., direct distance from A to B can never be longer than when traveling from A to B via some third location C
+
+
+
+#### Numerical Data
+
+Two records: *A*=(*a*1, ..., *ak*), *B*=(*b*1, ..., *bk*)
+o Here *k* is the number of attributes in your dataset (e.g., table) 
 
 - Euclidean distance 
 
-  o Definition: d(*A*,*B*) = SquareRoot((*a*1-*b*1)^2+...+(*ak* - *bk*)^2) 
+o Definition: d(*A*,*B*) = SquareRoot((*a*1-*b*1)^2+...+(*ak* - *bk*)^2) 
 
-  o Most popular, intuitive, and widely used distance metric for numeric data 
-  Because, when *k* = 2 or *k* = 3, it represents the standard real-world direct distance in 2- dimensional or 3-dimensional space 
+o Most popular, intuitive, and widely used distance metric for numeric data 
+Because, when *k* = 2 or *k* = 3, it represents the standard real-world direct distance in 2- dimensional or 3-dimensional space 
 
 - Manhattan distance 
   o Definition: d(*A*, *B*) = |*a*1-*b*1|+...+|*ak*-*bk*| 
@@ -47,7 +78,36 @@ As the examples are unlabeled, clustering relies on unsupervised machine learnin
   o d(*A*,*B*) = |*a*1-*b*1| 
 
 
-### Measures of Clustering Performance 
+
+**Notion of Distance between two vectors:**
+
+$X=<x_1,…,x_n>$ and $Y=<y_1,…,y_n>$ 
+
+
+$(|x_1-y_1|^q  + … + |x_n-y_n|^q)^{1/q}$
+
+
+**q=2:**  **Euclidean** **distance**
+
+ **q=1:**  **Manhattan** **distance**
+
+1<q<2: **Minkowski** **distance**
+
+
+
+**Dissimilarity between Binary Variables**  
+
+- Jaccard Distance:  Jaccard's coefficient (measure similarity) and Jaccard's distance (measure dissimilarity) are measurement of **asymmetric information on binary** (and non-binary) variables. 
+
+
+
+![](https://miro.medium.com/max/474/1*wMDgPaJ3SL2sWq0l4lJEbQ.jpeg)
+
+![](https://miro.medium.com/max/1824/1*EpTtZR7fD4-Jn-5zTKulVA.png)
+
+
+
+### Measures of Clustering Performance
 
 - **Internal(intrinsic)**:How good the clustering is without any external information (e.g., **SSE**) 
 - Sum-of-Squared-Errors(“cohesion”) 
@@ -124,7 +184,9 @@ Density-based clustering connects areas of high example density into clusters. T
 <br>
 
 4. Distribution-based Clustering (GMM)
-This clustering approach assumes data is composed of distributions, such as Gaussian distributions. As distance from the distribution's center increases, the probability that a point belongs to the distribution decreases. The bands show that decrease in probability. When you do not know the type of distribution in your data, you should use a different algorithm.
+  This clustering approach assumes data is composed of distributions, such as Gaussian distributions. As distance from the distribution's center increases, the probability that a point belongs to the distribution decreases. The bands show that decrease in probability. When you do not know the type of distribution in your data, you should use a different algorithm.
+
+  
 
 
 ## Hierarchical Clustering

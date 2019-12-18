@@ -1,0 +1,1039 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.1 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Extreme Gradient Boosting with XGBoost - Vishal Kumar</title>
+<meta name="description" content="Extreme Gradient Boosting with XGBoost">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Vishal Kumar">
+<meta property="og:title" content="Extreme Gradient Boosting with XGBoost">
+<meta property="og:url" content="https://vishalmnemonic.github.io/DC16/">
+
+
+  <meta property="og:description" content="Extreme Gradient Boosting with XGBoost">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-12-03T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://vishalmnemonic.github.io/DC16/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Vishal Kumar",
+      "url": "https://vishalmnemonic.github.io",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Vishal Kumar Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Vishal Kumar</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/about/" >About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/Projects/" >Projects</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/images/bio.jpg" alt="Vishal Kumar" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Vishal Kumar</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Data Science Portfolio
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Delhi, India</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:statvishal@gmail.com">
+            <meta itemprop="email" content="statvishal@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/statvishal" itemprop="sameAs">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/vishalmnemonic" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Extreme Gradient Boosting with XGBoost">
+    <meta itemprop="description" content="Extreme Gradient Boosting with XGBoost">
+    <meta itemprop="datePublished" content="December 03, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Extreme Gradient Boosting with XGBoost
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  20 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h2 id="xgboost-fitpredict">XGBoost: Fit/Predict</h2>
+<p>It’s time to create our first XGBoost model! We can use the scikit-learn .fit() / .predict() paradigm that we are already familiar to build your XGBoost models, as the xgboost library has a scikit-learn compatible API! Here, we’ll be working with churn data. This dataset contains imaginary data from a ride-sharing app with user behaviors over their first month of app usage in a set of imaginary cities as well as whether they used the service 5 months after sign-up.</p>
+
+<p>Our goal is to use the first month’s worth of data to predict whether the app’s users will remain users of the service at the 5 month mark. This is a typical setup for a churn prediction problem. To do this, we’ll split the data into training and test sets, fit a small xgboost model on the training set, and evaluate its performance on the test set by computing its accuracy.</p>
+
+<p>pandas and numpy have been imported as pd and np, and train_test_split has been imported from sklearn.model_selection. Additionally, the arrays for the features and the target have been created as X and y.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#import xgboost</span>
+<span class="kn">import</span> <span class="nn">xgboost</span> <span class="k">as</span> <span class="n">xgb</span>
+<span class="c"># Create arrays for the features and the target: X, y</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">churn_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">churn_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="c"># Create the training and test sets</span>
+<span class="n">X_train</span><span class="p">,</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">y_test</span><span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Instantiate the XGBClassifier: xg_cl</span>
+<span class="n">xg_cl</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBClassifier</span><span class="p">(</span><span class="n">objective</span><span class="o">=</span><span class="s">'binary:logistic'</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Fit the classifier to the training set</span>
+<span class="n">xg_cl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="c"># Predict the labels of the test set: preds</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">xg_cl</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="c"># Compute the accuracy: accuracy</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">preds</span><span class="o">==</span><span class="n">y_test</span><span class="p">))</span><span class="o">/</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"accuracy: </span><span class="si">%</span><span class="s">f"</span> <span class="o">%</span> <span class="p">(</span><span class="n">accuracy</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="decision-trees">Decision trees</h2>
+<p>Our task in this exercise is to make a simple decision tree using scikit-learn’s DecisionTreeClassifier on the breast cancer dataset that comes pre-loaded with scikit-learn. This dataset contains numeric measurements of various dimensions of individual tumors (such as perimeter and texture) from breast biopsies and a single outcome value (the tumor is either malignant, or benign). We’ve preloaded the dataset of samples (measurements) into X and the target values per tumor into y. Now, you have to split the complete dataset into training and testing sets, and then train a DecisionTreeClassifier. You’ll specify a parameter called max_depth. Many other parameters can be modified within this model, and we can check all of them out <a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier">here</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import the necessary modules</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="c"># Create the training and test sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Instantiate the classifier: dt_clf_4</span>
+<span class="n">dt_clf_4</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="c"># Fit the classifier to the training set</span>
+<span class="n">dt_clf_4</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="c"># Predict the labels of the test set: y_pred_4</span>
+<span class="n">y_pred_4</span> <span class="o">=</span> <span class="n">dt_clf_4</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="c"># Compute the accuracy of the predictions: accuracy</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">y_pred_4</span><span class="o">==</span><span class="n">y_test</span><span class="p">))</span><span class="o">/</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"accuracy:"</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="measuring-accuracy">Measuring accuracy</h2>
+<p>We’ll now practice using XGBoost’s learning API through its baked in cross-validation capabilities. XGBoost gets its lauded performance and efficiency gains by utilizing its own optimized data structure for datasets called a DMatrix. In the previous exercise, the input datasets were converted into DMatrix data on the fly, but when we use the xgboost cv object, we have to first explicitly convert your data into a DMatrix. So, that’s what we will do here before running cross-validation on churn_data.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the DMatrix: churn_dmatrix</span>
+<span class="n">churn_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">churn_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">churn_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="c"># Create the parameter dictionary: params</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:logistic"</span><span class="p">,</span> <span class="s">"max_depth"</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="c"># Perform cross-validation: cv_results</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">churn_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="s">"error"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Print cv_results</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
+<span class="c"># Print the accuracy</span>
+<span class="k">print</span><span class="p">(((</span><span class="mi">1</span><span class="o">-</span><span class="n">cv_results</span><span class="p">[</span><span class="s">"test-error-mean"</span><span class="p">])</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<h2 id="measuring-auc">Measuring AUC</h2>
+<p>Now that we’ve used cross-validation to compute average out-of-sample accuracy (after converting from an error), it’s very easy to compute any other metric you might be interested in. All we have to do is pass it (or a list of metrics) in as an argument to the metrics parameter of xgb.cv(). Our job in this exercise is to compute another common metric used in binary classification - the area under the curve (“auc”).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Perform cross_validation: cv_results</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">churn_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="s">"auc"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Print cv_results</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
+<span class="c"># Print the AUC</span>
+<span class="k">print</span><span class="p">((</span><span class="n">cv_results</span><span class="p">[</span><span class="s">"test-auc-mean"</span><span class="p">])</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h2 id="decision-trees-as-base-learners">Decision trees as base learners</h2>
+<p>It’s now time to build an XGBoost model to predict house prices - not in Boston, Massachusetts, but in Ames, Iowa! This dataset of housing prices has been pre-loaded into a DataFrame called df. If we explore it in the Shell, we’ll see that there are a variety of features about the house and its location in the city. Our goal is to use trees as base learners. By default, XGBoost uses trees as base learners, so we don’t have to specify that you want to use trees here with booster=”gbtree”. xgboost has been imported as xgb and the arrays for the features and the target are available in X and y, respectively.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the training and test sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Instantiate the XGBRegressor: xg_reg</span>
+<span class="n">xg_reg</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">(</span><span class="n">objective</span><span class="o">=</span><span class="s">'reg:linear'</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Fit the regressor to the training set</span>
+<span class="n">xg_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="c"># Predict the labels of the test set: preds</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">xg_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="c"># Compute the rmse: rmse</span>
+<span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">preds</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"RMSE: </span><span class="si">%</span><span class="s">f"</span> <span class="o">%</span> <span class="p">(</span><span class="n">rmse</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="linear-base-learners">Linear base learners</h2>
+<p>Now that we’ve used trees as base models in XGBoost, let’s use the other kind of base model that can be used with XGBoost - a linear learner. This model, although not as commonly used in XGBoost, allows us to create a regularized linear regression using XGBoost’s powerful learning API. However, because it’s uncommon, we have to use XGBoost’s own non-scikit-learn compatible functions to build the model, such as xgb.train(). In order to do this you must create the parameter dictionary that describes the kind of booster you want to use. The key-value pair that defines the booster type (base model) you need is “booster”:”gblinear”. Once you’ve created the model, you can use the .train() and .predict() methods of the model just like you’ve done in the past. Here, the data has already been split into training and testing sets, so we can dive right into creating the DMatrix objects required by the XGBoost learning API.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Convert the training and testing sets into DMatrixes: DM_train, DM_test</span>
+<span class="n">DM_train</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">DM_test</span> <span class="o">=</span>  <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary: params</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"booster"</span><span class="p">:</span><span class="s">"gblinear"</span><span class="p">,</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">}</span>
+<span class="c"># Train the model: xg_reg</span>
+<span class="n">xg_reg</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="p">,</span> <span class="n">dtrain</span><span class="o">=</span><span class="n">DM_train</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="c"># Predict the labels of the test set: preds</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">xg_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">DM_test</span><span class="p">)</span>
+<span class="c"># Compute and print the RMSE</span>
+<span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">preds</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"RMSE: </span><span class="si">%</span><span class="s">f"</span> <span class="o">%</span> <span class="p">(</span><span class="n">rmse</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="evaluating-model-quality">Evaluating model quality</h2>
+<p>It’s now time to begin evaluating model quality. Here, we will compare the RMSE and MAE of a cross-validated XGBoost model on the Ames housing data.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the DMatrix: housing_dmatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary: params</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">,</span> <span class="s">"max_depth"</span><span class="p">:</span><span class="mi">4</span><span class="p">}</span>
+<span class="c"># Perform cross-validation: cv_results</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="s">"rmse"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Print cv_results</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
+<span class="c"># Extract and print final boosting round metric</span>
+<span class="k">print</span><span class="p">((</span><span class="n">cv_results</span><span class="p">[</span><span class="s">"test-rmse-mean"</span><span class="p">])</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="using-regularization-in-xgboost">Using regularization in XGBoost</h2>
+<p>We will now vary the l2 regularization penalty - also known as “lambda” - and see its effect on overall model performance on the Ames housing dataset.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the DMatrix: housing_dmatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="n">reg_params</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="c"># Create the initial parameter dictionary for varying l2 strength: params</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">,</span><span class="s">"max_depth"</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="c"># Create an empty list for storing rmses as a function of l2 complexity</span>
+<span class="n">rmses_l2</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c"># Iterate over reg_params</span>
+<span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">reg_params</span><span class="p">:</span>
+    <span class="c"># Update l2 strength</span>
+    <span class="n">params</span><span class="p">[</span><span class="s">"lambda"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reg</span>
+    <span class="c"># Pass this updated param dictionary into cv</span>
+    <span class="n">cv_results_rmse</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="s">"rmse"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+    <span class="c"># Append best rmse (final round) to rmses_l2</span>
+    <span class="n">rmses_l2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv_results_rmse</span><span class="p">[</span><span class="s">"test-rmse-mean"</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c"># Look at best rmse per l2 param</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Best rmse as a function of l2:"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">reg_params</span><span class="p">,</span> <span class="n">rmses_l2</span><span class="p">)),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">"l2"</span><span class="p">,</span> <span class="s">"rmse"</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<h2 id="visualizing-individual-xgboost-trees">Visualizing individual XGBoost trees</h2>
+<p>Now that we’ve used XGBoost to both build and evaluate regression as well as classification models, we should get a handle on how to visually explore your models. Here, we will visualize individual trees from the fully boosted model that XGBoost creates using the entire housing dataset. XGBoost has a plot_tree() function that makes this type of visualization easy. Once we train a model using the XGBoost learning API, we can pass it to the plot_tree() function along with the number of trees you want to plot using the num_trees argument.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the DMatrix: housing_dmatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary: params</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">,</span> <span class="s">"max_depth"</span><span class="p">:</span><span class="mi">2</span><span class="p">}</span>
+<span class="c"># Train the model: xg_reg</span>
+<span class="n">xg_reg</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c"># Plot the first tree</span>
+<span class="n">xgb</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">xg_reg</span><span class="p">,</span><span class="n">num_trees</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c"># Plot the fifth tree</span>
+<span class="n">xgb</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">xg_reg</span><span class="p">,</span><span class="n">num_trees</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c"># Plot the last tree sideways</span>
+<span class="n">xgb</span><span class="o">.</span><span class="n">plot_tree</span><span class="p">(</span><span class="n">xg_reg</span><span class="p">,</span><span class="n">num_trees</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">rankdir</span><span class="o">=</span><span class="s">'LR'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="visualizing-feature-importances-what-features-are-most-important-in-my-dataset">Visualizing feature importances: What features are most important in my dataset</h2>
+<p>Another way to visualize our XGBoost models is to examine the importance of each feature column in the original dataset within the model. One simple way of doing this involves counting the number of times each feature is split on across all boosting rounds (trees) in the model, and then visualizing the result as a bar graph, with the features ordered according to how many times they appear. XGBoost has a plot_importance() function that allows us to do exactly this, and we’ll get a chance to use it in this exercise!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the DMatrix: housing_dmatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary: params</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">,</span> <span class="s">"max_depth"</span><span class="p">:</span><span class="mi">4</span><span class="p">}</span>
+<span class="c"># Train the model: xg_reg</span>
+<span class="n">xg_reg</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c"># Plot the feature importances</span>
+<span class="n">xgb</span><span class="o">.</span><span class="n">plot_importance</span><span class="p">(</span><span class="n">xg_reg</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="tuning-the-number-of-boosting-rounds">Tuning the number of boosting rounds</h2>
+<p>Let’s start with parameter tuning by seeing how the number of boosting rounds (number of trees you build) impacts the out-of-sample performance of our XGBoost model. We’ll use xgb.cv() inside a for loop and build one model per num_boost_round parameter. Here, we’ll continue working with the Ames housing dataset. The features are available in the array X, and the target vector is contained in y.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the DMatrix: housing_dmatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary for each tree: params</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">,</span> <span class="s">"max_depth"</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="c"># Create list of number of boosting rounds</span>
+<span class="n">num_rounds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span>
+<span class="c"># Empty list to store final round rmse per XGBoost model</span>
+<span class="n">final_rmse_per_round</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c"># Iterate over num_rounds and build one model per num_boost_round parameter</span>
+<span class="k">for</span> <span class="n">curr_num_rounds</span> <span class="ow">in</span> <span class="n">num_rounds</span><span class="p">:</span>
+    <span class="c"># Perform cross-validation: cv_results</span>
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="n">curr_num_rounds</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="s">"rmse"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+    <span class="c"># Append final round RMSE</span>
+    <span class="n">final_rmse_per_round</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv_results</span><span class="p">[</span><span class="s">"test-rmse-mean"</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="c"># Print the resultant DataFrame</span>
+<span class="n">num_rounds_rmses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">num_rounds</span><span class="p">,</span> <span class="n">final_rmse_per_round</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">num_rounds_rmses</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">"num_boosting_rounds"</span><span class="p">,</span><span class="s">"rmse"</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<h2 id="automated-boosting-round-selection-using-early_stopping">Automated boosting round selection using early_stopping</h2>
+<p>Now, instead of attempting to cherry pick the best possible number of boosting rounds, we can very easily have XGBoost automatically select the number of boosting rounds for us within xgb.cv(). This is done using a technique called early stopping.</p>
+
+<p>Early stopping works by testing the XGBoost model after every boosting round against a hold-out dataset and stopping the creation of additional boosting rounds (thereby finishing training of the model early) if the hold-out metric (“rmse” in our case) does not improve for a given number of rounds. Here we will use the early_stopping_rounds parameter in xgb.cv() with a large possible number of boosting rounds (50). Bear in mind that if the holdout metric continuously improves up through when num_boosting_rounds is reached, then early stopping does not occur. Here, the DMatrix and parameter dictionary have been created for us. Our task is to use cross-validation with early stopping. Go for it!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create your housing DMatrix: housing_dmatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary for each tree: params</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">,</span> <span class="s">"max_depth"</span><span class="p">:</span><span class="mi">4</span><span class="p">}</span>
+<span class="c"># Perform cross-validation with early stopping: cv_results</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="s">"rmse"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="c"># Print cv_results</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="tuning-eta">Tuning eta</h2>
+<p>It’s time to practice tuning other XGBoost hyperparameters in earnest and observing their effect on model performance! We’ll begin by tuning the “eta”, also known as the learning rate. The learning rate in XGBoost is a parameter that can range between 0 and 1, with higher values of “eta” penalizing feature weights more strongly, causing much stronger regularization.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create your housing DMatrix: housing_dmatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary for each tree (boosting round)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">,</span> <span class="s">"max_depth"</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="c"># Create list of eta values and empty list to store final round rmse per xgboost model</span>
+<span class="n">eta_vals</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="n">best_rmse</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c"># Systematically vary the eta</span>
+<span class="k">for</span> <span class="n">curr_val</span> <span class="ow">in</span> <span class="n">eta_vals</span><span class="p">:</span>
+    <span class="n">params</span><span class="p">[</span><span class="s">"eta"</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr_val</span>
+    <span class="c"># Perform cross-validation: cv_results</span>
+    <span class="c"># Create your housing DMatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+
+<span class="c"># Create the parameter dictionary</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">}</span>
+
+<span class="c"># Create list of max_depth values</span>
+<span class="n">max_depths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">best_rmse</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c"># Systematically vary the max_depth</span>
+<span class="k">for</span> <span class="n">curr_val</span> <span class="ow">in</span> <span class="n">max_depths</span><span class="p">:</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s">"eta"</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr_val</span>
+
+    <span class="c"># Perform cross-validation</span>
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="s">"rmse"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+
+
+
+    <span class="c"># Append the final round rmse to best_rmse</span>
+    <span class="n">best_rmse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv_results</span><span class="p">[</span><span class="s">"test-rmse-mean"</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c"># Print the resultant DataFrame</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">max_depths</span><span class="p">,</span> <span class="n">best_rmse</span><span class="p">)),</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">"max_depth"</span><span class="p">,</span><span class="s">"best_rmse"</span><span class="p">]))</span>
+    <span class="c"># Append the final round rmse to best_rmse</span>
+    <span class="n">best_rmse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv_results</span><span class="p">[</span><span class="s">"test-rmse-mean"</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="c"># Print the resultant DataFrame</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">eta_vals</span><span class="p">,</span> <span class="n">best_rmse</span><span class="p">)),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">"eta"</span><span class="p">,</span><span class="s">"best_rmse"</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<h2 id="tuning-max_depth">Tuning max_depth</h2>
+<p>Our job is to tune max_depth, which is the parameter that dictates the maximum depth that each tree in a boosting round can grow to. Smaller values will lead to shallower trees, and larger values to deeper trees.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create your housing DMatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">}</span>
+<span class="c"># Create list of max_depth values</span>
+<span class="n">max_depths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">best_rmse</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c"># Systematically vary the max_depth</span>
+<span class="k">for</span> <span class="n">curr_val</span> <span class="ow">in</span> <span class="n">max_depths</span><span class="p">:</span>
+    <span class="n">params</span><span class="p">[</span><span class="s">"eta"</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr_val</span>
+    <span class="c"># Perform cross-validation</span>
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="s">"rmse"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+    <span class="c"># Append the final round rmse to best_rmse</span>
+    <span class="n">best_rmse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv_results</span><span class="p">[</span><span class="s">"test-rmse-mean"</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="c"># Print the resultant DataFrame</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">max_depths</span><span class="p">,</span> <span class="n">best_rmse</span><span class="p">)),</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">"max_depth"</span><span class="p">,</span><span class="s">"best_rmse"</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<h2 id="tuning-colsample_bytree">Tuning colsample_bytree</h2>
+<p>Now, it’s time to tune “colsample_bytree”. We’ve already seen this if we’ve ever worked with scikit-learn’s RandomForestClassifier or RandomForestRegressor, where it just was called max_features. In both xgboost and sklearn, this parameter (although named differently) simply specifies the fraction of features to choose from at every split in a given tree. In xgboost, colsample_bytree must be specified as a float between 0 and 1.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create your housing DMatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter dictionary</span>
+<span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s">"objective"</span><span class="p">:</span><span class="s">"reg:linear"</span><span class="p">,</span><span class="s">"max_depth"</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="c"># Create list of hyperparameter values: colsample_bytree_vals</span>
+<span class="n">colsample_bytree_vals</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">best_rmse</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c"># Systematically vary the hyperparameter value</span>
+<span class="k">for</span> <span class="n">curr_val</span> <span class="ow">in</span> <span class="n">colsample_bytree_vals</span><span class="p">:</span>
+    <span class="n">params</span><span class="p">[</span><span class="s">"eta"</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr_val</span>
+    <span class="c"># Perform cross-validation</span>
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">cv</span><span class="p">(</span><span class="n">dtrain</span><span class="o">=</span><span class="n">housing_dmatrix</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                 <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                 <span class="n">metrics</span><span class="o">=</span><span class="s">"rmse"</span><span class="p">,</span> <span class="n">as_pandas</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+    <span class="c"># Append the final round rmse to best_rmse</span>
+    <span class="n">best_rmse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv_results</span><span class="p">[</span><span class="s">"test-rmse-mean"</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="c"># Print the resultant DataFrame</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">colsample_bytree_vals</span><span class="p">,</span> <span class="n">best_rmse</span><span class="p">)),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">"colsample_bytree"</span><span class="p">,</span><span class="s">"best_rmse"</span><span class="p">]))</span>
+</code></pre></div></div>
+
+<h2 id="grid-search-with-xgboost">Grid Search with XGBoost</h2>
+<p>Let’s take our parameter tuning to the next level by using scikit-learn’s GridSearch and RandomizedSearch capabilities with internal cross-validation using the GridSearchCV and RandomizedSearchCV functions. We will use these to find the best model exhaustively from a collection of possible parameter values across multiple parameters simultaneously. Let’s get to work, starting with GridSearchCV!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create your housing DMatrix: housing_dmatrix</span>
+<span class="n">housing_dmatrix</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c"># Create the parameter grid: gbm_param_grid</span>
+<span class="n">gbm_param_grid</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'colsample_bytree'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+    <span class="s">'n_estimators'</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">],</span>
+    <span class="s">'max_depth'</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="c"># Instantiate the regressor: gbm</span>
+<span class="n">gbm</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">()</span>
+<span class="c"># Perform grid search: grid_mse</span>
+<span class="n">grid_mse</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">gbm</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">gbm_param_grid</span><span class="p">,</span>
+                       <span class="n">scoring</span><span class="o">=</span><span class="s">'neg_mean_squared_error'</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">grid_mse</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="c"># Print the best parameters and lowest RMSE</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Best parameters found: "</span><span class="p">,</span> <span class="n">grid_mse</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Lowest RMSE found: "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">grid_mse</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<h2 id="random-search-with-xgboost">Random Search with XGBoost</h2>
+<p>Often, GridSearchCV can be really time consuming, so in practice, we may want to use RandomizedSearchCV instead, as we will do in this exercise. The good news is we only have to make a few modifications to your GridSearchCV code to do RandomizedSearchCV. The key difference is we have to specify a param_distributions parameter instead of a param_grid parameter.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the parameter grid: gbm_param_grid</span>
+<span class="n">gbm_param_grid</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'n_estimators'</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">],</span>
+    <span class="s">'max_depth'</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c"># Instantiate the regressor: gbm</span>
+<span class="n">gbm</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c"># Perform random search: grid_mse</span>
+<span class="n">randomized_mse</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span><span class="n">param_distributions</span><span class="o">=</span><span class="n">gbm_param_grid</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="n">gbm</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s">"neg_mean_squared_error"</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c"># Fit randomized_mse to the data</span>
+<span class="n">randomized_mse</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="c"># Print the best parameters and lowest RMSE</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Best parameters found: "</span><span class="p">,</span> <span class="n">randomized_mse</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Lowest RMSE found: "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">randomized_mse</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<h2 id="encoding-categorical-columns-i-labelencoder">Encoding categorical columns I: LabelEncoder</h2>
+<p>Now that we’ve seen what will need to be done to get the housing data ready for XGBoost, let’s go through the process step-by-step. First, we will need to fill in missing values - as we saw previously, the column LotFrontage has many missing values. Then, we will need to encode any categorical columns in the dataset using one-hot encoding so that they are encoded numerically. We can watch this video from Supervised Learning with scikit-learn for a refresher on the idea.</p>
+
+<p>The data has five categorical columns: MSZoning, PavedDrive, Neighborhood, BldgType, and HouseStyle. Scikit-learn has a <a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html">LabelEncoder</a> function that converts the values in each categorical column into integers.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import LabelEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+<span class="c"># Fill missing values with 0</span>
+<span class="n">df</span><span class="o">.</span><span class="n">LotFrontage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">LotFrontage</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c"># Create a boolean mask for categorical columns</span>
+<span class="n">categorical_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">==</span> <span class="nb">object</span><span class="p">)</span>
+<span class="c"># Get list of categorical column names</span>
+<span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">categorical_mask</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="c"># Print the head of the categorical columns</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="c"># Create LabelEncoder object: le</span>
+<span class="n">le</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="c"># Apply LabelEncoder to categorical columns</span>
+<span class="n">df</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="c"># Print the head of the LabelEncoded categorical columns</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h2 id="encoding-categorical-columns-ii-onehotencoder">Encoding categorical columns II: OneHotEncoder</h2>
+<p>Okay - so we have our categorical columns encoded numerically. Can you now move onto using pipelines and XGBoost? Not yet! In the categorical columns of this dataset, there is no natural ordering between the entries. As an example: Using LabelEncoder, the CollgCr Neighborhood was encoded as 5, while the Veenker Neighborhood was encoded as 24, and Crawfor as 6. Is Veenker “greater” than Crawfor and CollgCr? No - and allowing the model to assume this natural ordering may result in poor performance. As a result, there is another step needed: We have to apply a one-hot encoding to create binary, or “dummy” variables. We can do this using scikit-learn’s <a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html">OneHotEncoder</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import OneHotEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="c"># Create OneHotEncoder: ohe</span>
+<span class="n">ohe</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">categorical_features</span><span class="o">=</span><span class="n">categorical_mask</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="c"># Apply OneHotEncoder to categorical columns - output is no longer a dataframe: df_encoded</span>
+<span class="n">df_encoded</span> <span class="o">=</span> <span class="n">ohe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c"># Print first 5 rows of the resulting dataset - again, this will no longer be a pandas dataframe</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df_encoded</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:])</span>
+<span class="c"># Print the shape of the original DataFrame</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c"># Print the shape of the transformed array</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df_encoded</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="encoding-categorical-columns-iii-dictvectorizer">Encoding categorical columns III: DictVectorizer</h2>
+<p>Alright, one final trick before we dive into pipelines. The two step process you just went through - LabelEncoder followed by OneHotEncoder - can be simplified by using a DictVectorizer. Using a DictVectorizer on a DataFrame that has been converted to a dictionary allows us to get label encoding as well as one-hot encoding in one go. Our task is to work through this strategy in this exercise!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import DictVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <span class="n">DictVectorizer</span>
+<span class="c"># Convert df into a dictionary: df_dict</span>
+<span class="n">df_dict</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s">"records"</span><span class="p">)</span>
+<span class="c"># Create the DictVectorizer object: dv</span>
+<span class="n">dv</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="c"># Apply dv on df: df_encoded</span>
+<span class="n">df_encoded</span> <span class="o">=</span> <span class="n">dv</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_dict</span><span class="p">)</span>
+<span class="c"># Print the resulting first five rows</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df_encoded</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:])</span>
+<span class="c"># Print the vocabulary</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">vocabulary_</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="preprocessing-within-a-pipeline">Preprocessing within a pipeline</h2>
+<p>Now that we’ve seen what steps need to be taken individually to properly process the Ames housing data, let’s use the much cleaner and more succinct DictVectorizer approach and put it alongside an XGBoostRegressor inside of a scikit-learn pipeline.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import necessary modules</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <span class="n">DictVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="c"># Fill LotFrontage missing values with 0</span>
+<span class="n">X</span><span class="o">.</span><span class="n">LotFrontage</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">LotFrontage</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c"># Setup the pipeline steps: steps</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s">"ohe_onestep"</span><span class="p">,</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="bp">False</span><span class="p">)),</span>
+         <span class="p">(</span><span class="s">"xgb_model"</span><span class="p">,</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">())]</span>
+<span class="c"># Create the pipeline: xgb_pipeline</span>
+<span class="n">xgb_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+<span class="c"># Fit the pipeline</span>
+<span class="n">xgb_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s">"records"</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="cross-validating-your-xgboost-model">Cross-validating your XGBoost model</h2>
+<p>In this exercise, we’ll go one step further by using the pipeline you’ve created to preprocess and cross-validate our model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import necessary modules</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <span class="n">DictVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="c"># Fill LotFrontage missing values with 0</span>
+<span class="n">X</span><span class="o">.</span><span class="n">LotFrontage</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">LotFrontage</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c"># Setup the pipeline steps: steps</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s">"ohe_onestep"</span><span class="p">,</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="bp">False</span><span class="p">)),</span>
+         <span class="p">(</span><span class="s">"xgb_model"</span><span class="p">,</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">objective</span><span class="o">=</span><span class="s">"reg:linear"</span><span class="p">))]</span>
+<span class="c"># Create the pipeline: xgb_pipeline</span>
+<span class="n">xgb_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+<span class="c"># Cross-validate the model</span>
+<span class="n">cross_val_scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">xgb_pipeline</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s">"records"</span><span class="p">),</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s">"neg_mean_squared_error"</span><span class="p">)</span>
+<span class="c"># Print the 10-fold RMSE</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"10-fold RMSE: "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">abs</span><span class="p">(</span><span class="n">cross_val_scores</span><span class="p">))))</span>
+</code></pre></div></div>
+
+<h2 id="kidney-disease-case-study-i-categorical-imputer">Kidney disease case study I: Categorical Imputer</h2>
+<p>We’ll now continue your exploration of using pipelines with a dataset that requires significantly more wrangling. The <a href="https://archive.ics.uci.edu/ml/datasets/chronic_kidney_disease">chronic kidney disease dataset</a> contains both categorical and numeric features, but contains lots of missing values. The goal here is to predict who has chronic kidney disease given various blood indicators as features.</p>
+
+<p>We will introduce a new library, <a href="https://github.com/pandas-dev/sklearn-pandas">sklearn_pandas</a>, that allows us to chain many more processing steps inside of a pipeline than are currently supported in scikit-learn. Specifically, we’ll be able to impute missing categorical values directly using the Categorical_Imputer() class in sklearn_pandas, and the DataFrameMapper() class to apply any arbitrary sklearn-compatible transformer on DataFrame columns, where the resulting output can be either a NumPy array or DataFrame.</p>
+
+<p>We’ve also created a transformer called a Dictifier that encapsulates converting a DataFrame using .to_dict(“records”) without you having to do it explicitly (and so that it works in a pipeline). Finally, we’ve also provided the list of feature names in kidney_feature_names, the target name in kidney_target_name, the features in X, and the target in y.</p>
+
+<p>Our task is to apply the CategoricalImputer to impute all of the categorical columns in the dataset. We can refer to how the numeric imputation mapper was created as a template. Notice the keyword arguments input_df=True and df_out=True? This is so that you can work with DataFrames instead of arrays. By default, the transformers are passed a numpy array of the selected columns as input, and as a result, the output of the DataFrame mapper is also an array. Scikit-learn transformers have historically been designed to work with numpy arrays, not pandas DataFrames, even though their basic indexing interfaces are similar.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import necessary modules</span>
+<span class="kn">from</span> <span class="nn">sklearn_pandas</span> <span class="kn">import</span> <span class="n">DataFrameMapper</span>
+<span class="kn">from</span> <span class="nn">sklearn_pandas</span> <span class="kn">import</span> <span class="n">CategoricalImputer</span>
+<span class="c"># Check number of nulls in each feature column</span>
+<span class="n">nulls_per_column</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">nulls_per_column</span><span class="p">)</span>
+<span class="c"># Create a boolean mask for categorical columns</span>
+<span class="n">categorical_feature_mask</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">==</span> <span class="nb">object</span>
+<span class="c"># Get list of categorical column names</span>
+<span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">categorical_feature_mask</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="c"># Get list of non-categorical column names</span>
+<span class="n">non_categorical_columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">~</span><span class="n">categorical_feature_mask</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="c"># Apply numeric imputer</span>
+<span class="n">numeric_imputation_mapper</span> <span class="o">=</span> <span class="n">DataFrameMapper</span><span class="p">(</span>
+                                            <span class="p">[([</span><span class="n">numeric_feature</span><span class="p">],</span><span class="n">Imputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s">"median"</span><span class="p">))</span> <span class="k">for</span> <span class="n">numeric_feature</span> <span class="ow">in</span> <span class="n">non_categorical_columns</span><span class="p">],</span>
+                                            <span class="n">input_df</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                            <span class="n">df_out</span><span class="o">=</span><span class="bp">True</span>
+                                           <span class="p">)</span>
+<span class="c"># Apply categorical imputer</span>
+<span class="n">categorical_imputation_mapper</span> <span class="o">=</span> <span class="n">DataFrameMapper</span><span class="p">(</span>
+                                                <span class="p">[(</span><span class="n">category_feature</span><span class="p">,</span> <span class="n">CategoricalImputer</span><span class="p">())</span> <span class="k">for</span> <span class="n">category_feature</span> <span class="ow">in</span> <span class="n">categorical_columns</span><span class="p">],</span>
+                                                <span class="n">input_df</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                                <span class="n">df_out</span><span class="o">=</span><span class="bp">True</span>
+                                               <span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="kidney-disease-case-study-ii-feature-union">Kidney disease case study II: Feature Union</h2>
+<p>Having separately imputed numeric as well as categorical columns, our task is now to use scikit-learn’s <a href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.FeatureUnion.html">FeatureUnion</a> to concatenate their results, which are contained in two separate transformer objects - numeric_imputation_mapper, and categorical_imputation_mapper, respectively. Just like with pipelines, we have to pass it a list of (string, transformer) tuples, where the first half of each tuple is the name of the transformer.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Import FeatureUnion</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">FeatureUnion</span>
+<span class="c"># Combine the numeric and categorical transformations</span>
+<span class="n">numeric_categorical_union</span> <span class="o">=</span> <span class="n">FeatureUnion</span><span class="p">([</span>
+                                          <span class="p">(</span><span class="s">"num_mapper"</span><span class="p">,</span> <span class="n">numeric_imputation_mapper</span><span class="p">),</span>
+                                          <span class="p">(</span><span class="s">"cat_mapper"</span><span class="p">,</span> <span class="n">categorical_imputation_mapper</span><span class="p">)</span>
+                                         <span class="p">])</span>
+</code></pre></div></div>
+
+<h2 id="kidney-disease-case-study-iii-full-pipeline">Kidney disease case study III: Full pipeline</h2>
+<p>It’s time to piece together all of the transforms along with an XGBClassifier to build the full pipeline! Besides the numeric_categorical_union that we created in the previous exercise, there are two other transforms needed: the Dictifier() transform which we created for you, and the DictVectorizer(). After creating the pipeline, our task is to cross-validate it to see how well it performs.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create full pipeline</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+                     <span class="p">(</span><span class="s">"featureunion"</span><span class="p">,</span> <span class="n">numeric_categorical_union</span><span class="p">),</span>
+                     <span class="p">(</span><span class="s">"dictifier"</span><span class="p">,</span> <span class="n">Dictifier</span><span class="p">()),</span>
+                     <span class="p">(</span><span class="s">"vectorizer"</span><span class="p">,</span> <span class="n">DictVectorizer</span><span class="p">(</span><span class="n">sort</span><span class="o">=</span><span class="bp">False</span><span class="p">)),</span>
+                     <span class="p">(</span><span class="s">"clf"</span><span class="p">,</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+                    <span class="p">])</span>
+<span class="c"># Perform cross-validation</span>
+<span class="n">cross_val_scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">kidney_data</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s">"roc_auc"</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c"># Print avg. AUC</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"3-fold AUC: "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cross_val_scores</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="bringing-it-all-together">Bringing it all together</h2>
+<p>Alright, it’s time to bring together everything we’ve learned so far! In this final exercise of the course, we will combine our work from the previous exercises into one end-to-end XGBoost pipeline to really cement our understanding of preprocessing and pipelines in XGBoost. Our job is to perform a randomized search and identify the best hyperparameters.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the parameter grid</span>
+<span class="n">gbm_param_grid</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'clf__learning_rate'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">.</span><span class="mo">05</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="mo">05</span><span class="p">),</span>
+    <span class="s">'clf__max_depth'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s">'clf__n_estimators'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c"># Perform RandomizedSearchCV</span>
+<span class="n">randomized_roc_auc</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+                                        <span class="n">param_distributions</span><span class="o">=</span><span class="n">gbm_param_grid</span><span class="p">,</span>
+                                        <span class="n">n_iter</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s">'roc_auc'</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c"># Fit the estimator</span>
+<span class="n">randomized_roc_auc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="c"># Compute metrics</span>
+<span class="k">print</span><span class="p">(</span><span class="n">randomized_roc_auc</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">randomized_roc_auc</span><span class="o">.</span><span class="n">best_estimator_</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="datasets">Datasets:</h2>
+<ul>
+  <li><a href="https://assets.datacamp.com/production/repositories/943/datasets/4dbcaee889ef06fb0763e4a8652a4c1f268359b2/ames_housing_trimmed_processed.csv">Ames housing prices (preprocessed)</a></li>
+  <li><a href="https://assets.datacamp.com/production/course_6611/datasets/ames_unprocessed_data.csv">Ames housing prices (original)</a></li>
+  <li><a href="https://assets.datacamp.com/production/course_6611/datasets/chronic_kidney_disease.csv">Chronic kidney disease</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#python" class="page__taxonomy-item" rel="tag">python</a>
+    
+    </span>
+  </p>
+
+
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-12-03T00:00:00+00:00">December 03, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Extreme+Gradient+Boosting+with+XGBoost%20https%3A%2F%2Fvishalmnemonic.github.io%2FDC16%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fvishalmnemonic.github.io%2FDC16%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=https%3A%2F%2Fvishalmnemonic.github.io%2FDC16%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fvishalmnemonic.github.io%2FDC16%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/DC15/" class="pagination--pager" title="Statistical Thinking with Python (2)
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/DC15/" rel="permalink">Statistical Thinking with Python (2)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  32 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Statistical Thinking with Python (2)
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/DC14/" rel="permalink">Statistical Thinking with Python (1)
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  18 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Statistical Thinking with Python (1)
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/DC13/" rel="permalink">Interactive Data Visualization with Bokeh
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  31 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Interactive Data Visualization with Bokeh
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/DC12/" rel="permalink">Introduction to Data Visualization with Python
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  37 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction to Data Visualization with Python
+</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="https://github.com/vishalmnemonic"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2018 Vishal Kumar. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

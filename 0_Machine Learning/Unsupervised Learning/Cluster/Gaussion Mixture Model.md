@@ -1,3 +1,5 @@
+
+
 ## k-Means
 
 prioster model
@@ -56,21 +58,15 @@ a) **Expectation Step**: Compute p(zi = k | xi, θ). In other words, does sample
 
 b) **Maximization Step**: Update the Gaussian parameters (θ) to fit points assigned to them.
 
-![image-20191015174654303](Gaussion Mixture Model.assets/image-20191015174654303.png)
-
-![image-20191015174816898](Gaussion Mixture Model.assets/image-20191015174816898.png)
 
 
-
-![image-20191015175103769](Gaussion Mixture Model.assets/image-20191015175103769.png)
+![image-20191015175103769.png](https://i.loli.net/2019/11/27/HWJikKU67hZCQYI.png)
 
 
 
-we can choose one of clusters with higher prob
+![image-20191015174544446.png](https://i.loli.net/2019/11/27/8MNkKY37lOEpC6c.png)
 
-
-
-
+![image-20191015174816898.png](https://i.loli.net/2019/11/27/7Ff5E4BkCRd8gHJ.png)
 
 
 
@@ -113,17 +109,12 @@ The EM algorithm can very very slow, even on the fastest computer. It works best
 
 1. First and foremost, **k-means does not account for variance.**  By variance, we are referring to the width of the bell shape curve.
 
-![img](https://miro.medium.com/max/1600/0*tBFK650dBxOxqn2H.png)
+<img src="https://miro.medium.com/max/1600/0*tBFK650dBxOxqn2H.png" alt="img" style="zoom:50%;" />
 
 
 
 2. The second difference between k-means and Gaussian mixture models is that the former performs **hard classification** whereas the latter performs **soft classification.**
 
+3. Kmean is guaranteed to converge in a good sense;
 
-
-
-
-
-
-
-
+   Although an EM iteration does increase the observed data (i.e., marginal) likelihood function, no guarantee exists that the sequence converges to a [maximum likelihood estimator](https://en.wikipedia.org/wiki/Maximum_likelihood_estimator). For [multimodal distributions](https://en.wikipedia.org/wiki/Bimodal_distribution), this means that an EM algorithm may converge to a [local maximum](https://en.wikipedia.org/wiki/Local_maximum) of the observed data likelihood function, depending on starting values.

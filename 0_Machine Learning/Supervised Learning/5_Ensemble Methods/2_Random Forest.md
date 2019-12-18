@@ -4,13 +4,26 @@ Random Forest is an ensemble of Decision Trees, generally trained via the baggin
 
 (random forest has a 'feature importance' by product.
 
+## the differences between bagged trees and random forests?
+
+Bagging has a single parameter, which is the number of trees. All trees are fully grown binary tree (unpruned) and at each node in the tree one searches over all features to find the feature that best splits the data at that node.
+
+Random forests has 2 parameters:
+
+1. The first parameter is the same as bagging (the number of trees)
+2. The second parameter (unique to random forests) is mtry which is **how many features to search over to find the best feature.** this parameter is usually 1/3*D for regression and sqrt(D) for classification. thus during tree creation randomly mtry number of features are chosen from all available features and the best feature that splits the data is chosen.
+
+![](https://qph.fs.quoracdn.net/main-qimg-3926c524e0ec7751912b74c59075c721)
+
 
 
 
 
 One of the most famous and useful bagged algorithms is the **Random Forest**
 
-The algorithm works as follows:
+
+
+## The algorithm works as follows:
 
 1. Sample m data sets D1,…,Dm from D with replacement.
 
@@ -48,6 +61,3 @@ There are two reasons for this:
 
 
 
-## Rotation forest
-
-randowm forest works best when dataset is orthogal to y axis, and decision trees can do that
