@@ -15,8 +15,3 @@ Non-identifying: not part of the primary key
 
 weak entity should have at least one Identifying relationship;
 strong entity should have no identifying relationship;
-
-
-
-
-

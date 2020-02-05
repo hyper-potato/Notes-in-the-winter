@@ -34,4 +34,3 @@ Why shouldn't we instead maximize the likelihood $L({y^{(n)}}, {\hat{y}^{(n)}})$
 [2]: https://rdipietro.github.io/images/predict.jpg
 [3]: https://en.wikipedia.org/wiki/Discriminative_model
 [4]: http://math.stackexchange.com/questions/466927/independent-identically-distributed-iid-random-variables
-

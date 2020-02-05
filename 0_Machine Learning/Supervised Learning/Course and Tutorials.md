@@ -9,4 +9,3 @@ Math
 [Stanford mathematical foundations of computing (2016)](http://web.stanford.edu/class/cs103/)
 
 [Stat Learning](https://lagunita.stanford.edu/courses/HumanitiesSciences/StatLearning/Winter2016/course/)
-
