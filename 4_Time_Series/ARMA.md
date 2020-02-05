@@ -29,15 +29,15 @@ we do not *observe* the values of $\varepsilon_t$, so it is not really a regress
 
 It is possible to write any stationary AR(p) model as an MA(∞) model. For example, using repeated substitution, we can demonstrate this for an AR(1) model:
 
-$\begin{align*} y_t &= \phi_1y_{t-1} + \varepsilon_t\\ &= \phi_1(\phi_1y_{t-2} + \varepsilon_{t-1}) + \varepsilon_t\\ &= \phi_1^2y_{t-2} + \phi_1 \varepsilon_{t-1} + \varepsilon_t\\ &= \phi_1^3y_{t-3} + \phi_1^2\varepsilon_{t-2} + \phi_1 \varepsilon_{t-1} + \varepsilon_t\\ &\text{etc.} \end{align*}$
+$y_t = \phi_1y_{t-1} + \varepsilon_t\\ = \phi_1(\phi_1y_{t-2} + \varepsilon_{t-1}) + \varepsilon_t\\ = \phi_1^2y_{t-2} + \phi_1 \varepsilon_{t-1} + \varepsilon_t\\ = \phi_1^3y_{t-3} + \phi_1^2\varepsilon_{t-2} + \phi_1 \varepsilon_{t-1} + \varepsilon_t\\ \text{etc.} $
 
 Provided −1<ϕ1<1, the value of ϕ1k will get smaller as k gets larger. So eventually we obtain $y_t = \varepsilon_t + \phi_1 \varepsilon_{t-1} + \phi_1^2 \varepsilon_{t-2} + \phi_1^3 \varepsilon_{t-3} + \cdots,$  an MA(∞) process. 
 
-$$
-
-### MA model is always stationary 
 
 
+**MA model is always stationary**
+$x_t = \mu + \varepsilon_t + \theta \varepsilon_{t-1}$
+$E[x_t] = E[\mu] + E[\varepsilon_t] + \theta E[\varepsilon_{t-1}]$ = 0
 
 
 
