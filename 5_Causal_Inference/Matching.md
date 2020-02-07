@@ -41,9 +41,10 @@ Coarsened Exact Matching (CEM): discretize varibles into bins, and only match co
 
 
 
+## What if there is a gap between PSM 
 
-
-
+- ask how confident we are on our assumptions (we have include all the variable that will effect outcomes)
+- Assume we have avoid all the confound
 
 
 

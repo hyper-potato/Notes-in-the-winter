@@ -1,8 +1,6 @@
 # Variance, Covariance and Correlation
 
-
-
-## Variance - squaring Expectations to measure change
+## Variance - Squaring Expectations to Measure Change
 
 $Var(X) = E(X^2) - E(X)^2$
 
@@ -18,11 +16,9 @@ The value (n-1) indicates the degrees of freedom.
 
 
 
-## Covariance - measuring the Variance between two variables
+## Covariance - Measuring the Variance between Two Variables
 
 The covariance is a measure for how two variables are related to each other, i.e., how two variables vary with each other.
-
-
 
 The **covariance** between X and Y is defined as
 
@@ -100,14 +96,10 @@ A nice thing about the correlation is that it is always between −1 and 1.
 
 
 
-
-
 1. $-1 \leq \rho(X,Y) \leq 1$
 2. If $\rho(X,Y) = 1$, then $Y=aX+b$, where a > 0
 3. If $\rho(X,Y) = -1$, then $Y=aX+b$, where a < 0
 4. $\rho(aX+b,cY+d)=\rho(X,Y)$, for a, c>0
-
-
 
 
 
@@ -127,7 +119,7 @@ Note that as we discussed previously, two independent random variables are alway
 
 ## Autocorrelation
 
-Let xt denote the value of a time series at time t. The ACF of the series gives correlations between xt and xt−h for h = 1, 2, 3, etc. Theoretically, the autocorrelation between xt and xt−h equals
+Let $x_t$ denote the value of a time series at time t. The ACF of the series gives correlations between  $x_t$  and  $x_{t-h}$  for h = 1, 2, 3, etc. Theoretically, the autocorrelation between xt and xt−h equals
 
 $\dfrac{\text{Covariance}(x_t, x_{t-h})}{\text{Std.Dev.}(x_t)\text{Std.Dev.}(x_{t-h})} = \dfrac{\text{Covariance}(x_t, x_{t-h})}{\text{Variance}(x_t)}$
 
@@ -142,46 +134,11 @@ Autocorrelation can be used for the following two purposes:
 1. To detect non-randomness in data.
 2. To identify an appropriate time series model if the data are not random.
 
-
-
 Autocorrelation is a correlation coefficient. However, instead of correlation between two different variables, the correlation is between two values of the same variable at times **Xi** and **Xi+k**.
 
 When the autocorrelation is used to detect non-randomness, it is **usually only the first (lag 1) autocorrelation** that is of interest. When the autocorrelation is used to identify an appropriate time series model, the autocorrelations are usually [plotted](https://www.itl.nist.gov/div898/handbook/eda/section3/autocopl.htm) for many lags.
 
 
-### How to use the Autocorreation Function (ACF)?
-
-It is used to determine stationarity and seasonality.
-
-Stationarity:
-
-This refers to **whether the series is “going anywhere”** over time. Stationary series have a constant value over time.
-
-Below is what a non-stationary series looks like. Note the changing mean.
-<img src='https://coolstatsblog.files.wordpress.com/2013/08/j1.png'>
-
-And below is what a stationary series looks like. 
-<img src='https://coolstatsblog.files.wordpress.com/2013/08/k.png'>
-
-This is the first difference of the above series,
-
-The above time series provide strong indications of (non) stationary, but the ACF helps us ascertain this indication.
-
-If a series is non-stationary (moving), its ACF may look a little like this:
-<img src='https://coolstatsblog.files.wordpress.com/2013/08/l.png?w=596&h=444'>
-ACF of non-stationary series
-
-The above ACF is “decaying”, or decreasing, very slowly, and remains well above the significance range (dotted blue lines). **This is indicative of a non-stationary series.**
-
-On the other hand, observe the ACF of a stationary (not going anywhere) series:
-<img src='https://coolstatsblog.files.wordpress.com/2013/08/m.png?w=300&h=104&zoom=2'>
-ACF of stationary series
-
-Note that the ACF shows exponential decay. This is indicative of a stationary series.
-Consider the case of a simple stationary series, like the process shown below:
-$Y_t = \epsilon_t$
-
-We do not expect the ACF to be above the significance range for lags 1, 2, … This is intuitively satisfactory, because the above  process is purely random, and therefore whether you are looking at a lag of 1 or a lag of 20, the correlation should be theoretically zero, or at least insignificant.
 
 
 
