@@ -1,10 +1,10 @@
 # Correlation vs. Causation
 
 ## Threats to Causal Inference
+
 Two clusters of threats: Selection and Endogeneity
 
 ### 1. Sample selection bias
-
 
 
 ### 2. Endogeneity
