@@ -1,5 +1,9 @@
 ## Autoregressive models (AR)
 
+**AR(1) ➡️ MA(inf)**
+
+
+
 $y_{t} = c + \phi_{1}y_{t-1} + \phi_{2}y_{t-2} + \dots + \phi_{p}y_{t-p} + \varepsilon_{t}$ 
 
 where εt is white noise. This is like a multiple regression but with *lagged values* of yt as predictors. We refer to this as an **AR(p) model**, an autoregressive model of order p.

@@ -4,6 +4,16 @@ In most cases, the best model turns out a model that uses either only AR terms o
 
 
 
+When coef > 2*sd,we say it is significant, according to the normal distribution
+
+always expect mean is as twice as the standard deviation for both parameters
+
+
+
+
+
+
+
 Stationary:
 
 ARMA(p,q)
